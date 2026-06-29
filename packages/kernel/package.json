@@ -1,0 +1,42 @@
+{
+  "name": "@cybersim/kernel",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./wasm": {
+      "types": "./dist/wasm.d.ts",
+      "import": "./dist/wasm.mjs",
+      "require": "./dist/wasm.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "build:wasm": "cargo build --target wasm32-unknown-unknown --release && wasm-bindgen --target web --out-dir pkg ../target/wasm32-unknown-unknown/release/kernel.wasm",
+    "lint": "eslint src --ext .ts,.tsx",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:unit": "vitest run --reporter=verbose",
+    "bench": "vitest bench",
+    "clean": "rm -rf dist pkg"
+  },
+  "dependencies": {
+    "@cybersim/shared": "workspace:*",
+    "@cybersim/proto": "workspace:*",
+    "@cybersim/time": "workspace:*"
+  },
+  "devDependencies": {
+    "@cybersim/tsconfig": "workspace:*",
+    "tsup": "^8",
+    "vitest": "^2",
+    "@vitest/coverage-v8": "^2",
+    "wasm-bindgen-cli": "^0.2"
+  }
+}

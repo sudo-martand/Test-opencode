@@ -1,0 +1,21 @@
+{
+  "name": "@cybersim/shared",
+  "version": "0.1.0",
+  "private": true,
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "zod": "^3",
+    "immer": "^10",
+    "zustand": "^5",
+    "nanoid": "^5"
+  },
+  "devDependencies": {
+    "vitest": "^2",
+    "@types/node": "^20"
+  }
+}

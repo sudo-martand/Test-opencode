@@ -1,0 +1,27 @@
+{
+  "name": "@cybersim/terminal",
+  "version": "0.1.0",
+  "private": true,
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "wasm:build": "cd wasm && cargo build --target wasm32-unknown-unknown --release && wasm-opt -Oz ../pkg/terminal.wasm -o ../pkg/terminal.wasm"
+  },
+  "dependencies": {
+    "@cybersim/shared": "workspace:*",
+    "@cybersim/netstack": "workspace:*",
+    "@cybersim/hostos": "workspace:*",
+    "xterm": "^5",
+    "xterm-addon-fit": "^0.8",
+    "xterm-addon-web-links": "^0.9",
+    "xterm-addon-serialize": "^0.1"
+  },
+  "devDependencies": {
+    "@cybersim/wasm-crypto": "workspace:*",
+    "vitest": "^2",
+    "@types/node": "^20",
+    "wasm-opt": "^1"
+  }
+}

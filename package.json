@@ -1,0 +1,38 @@
+{
+  "name": "cybersim",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "test:e2e": "turbo run test:e2e",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "wasm:build": "turbo run wasm:build",
+    "db:push": "turbo run db:push",
+    "clean": "turbo run clean && rm -rf node_modules/.cache"
+  },
+  "devDependencies": {
+    "turbo": "^2",
+    "typescript": "^5",
+    "eslint": "^9",
+    "@typescript-eslint/eslint-plugin": "^7",
+    "@typescript-eslint/parser": "^7",
+    "prettier": "^3",
+    "eslint-config-prettier": "^9",
+    "eslint-plugin-react": "^7",
+    "eslint-plugin-react-hooks": "^4",
+    "eslint-plugin-jsx-a11y": "^6",
+    "eslint-plugin-import": "^2",
+    "eslint-plugin-unicorn": "^53"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "packageManager": "npm@10.8.0"
+}

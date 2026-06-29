@@ -1,0 +1,20 @@
+{
+  "name": "@cybersim/proto",
+  "version": "0.1.0",
+  "private": true,
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "build": "tsc && protobuf-ts --out=src/generated protos/*.proto",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@bufbuild/protobuf": "^1",
+    "@bufbuild/protobuf-ts": "^1"
+  },
+  "devDependencies": {
+    "protobuf-ts": "^2",
+    "vitest": "^2",
+    "@types/node": "^20"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@cybersim/*": ["packages/*/src"],
+      "@cybersim/kernel": ["packages/kernel/src"],
+      "@cybersim/ui": ["packages/ui/src"],
+      "@cybersim/shared": ["packages/shared/src"],
+      "@cybersim/proto": ["packages/proto/src"],
+      "@cybersim/wasm-crypto": ["packages/wasm-crypto/src"],
+      "@cybersim/terminal": ["packages/terminal/src"],
+      "@cybersim/netstack": ["packages/netstack/src"],
+      "@cybersim/hostos": ["packages/hostos/src"],
+      "@cybersim/threatintel": ["packages/threatintel/src"],
+      "@cybersim/ai": ["packages/ai/src"],
+      "@cybersim/geo": ["packages/geo/src"],
+      "@cybersim/sound": ["packages/sound/src"],
+      "@cybersim/fs": ["packages/fs/src"],
+      "@cybersim/time": ["packages/time/src"]
+    }
+  },
+  "exclude": ["node_modules", "dist", "build", ".next", ".turbo"]
+}

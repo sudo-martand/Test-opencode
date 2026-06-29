@@ -1,0 +1,37 @@
+{
+  "name": "@cybersim/hostos",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "build:wasm": "cargo build --target wasm32-unknown-unknown --release -p hostos-wasm && wasm-bindgen --target web --out-dir pkg ../target/wasm32-unknown-unknown/release/hostos_wasm.wasm",
+    "lint": "eslint src --ext .ts,.tsx",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:unit": "vitest run --reporter=verbose",
+    "clean": "rm -rf dist pkg"
+  },
+  "dependencies": {
+    "@cybersim/shared": "workspace:*",
+    "@cybersim/kernel": "workspace:*",
+    "@cybersim/fs": "workspace:*",
+    "@cybersim/netstack": "workspace:*"
+  },
+  "devDependencies": {
+    "@cybersim/tsconfig": "workspace:*",
+    "tsup": "^8",
+    "vitest": "^2",
+    "@vitest/coverage-v8": "^2",
+    "wasm-bindgen-cli": "^0.2"
+  }
+}
