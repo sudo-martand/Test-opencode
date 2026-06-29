@@ -1,4 +1,4 @@
-import { SimulationEvent, EventBus, EventHandler, EventMetadata } from './events';
+import type { SimulationEvent, EventBus, EventHandler, EventMetadata } from './index.js';
 
 type HandlerMap = Map<string, Set<EventHandler>>;
 
@@ -79,9 +79,9 @@ export function createEvent<T>(type: string, payload: T, metadata?: Partial<Even
     payload,
     metadata: {
       source: metadata?.source || 'unknown',
-      correlationId: metadata?.correlationId,
-      causationId: metadata?.causationId,
-      tags: metadata?.tags,
+      ...(metadata?.correlationId ? { correlationId: metadata.correlationId } : {}),
+      ...(metadata?.causationId ? { causationId: metadata.causationId } : {}),
+      ...(metadata?.tags ? { tags: metadata.tags } : {}),
     },
   };
 }

@@ -1,9 +1,9 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "pipeline": {
+  "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs      "outputs": ["dist/**", ".next/**", "pkg/**"]
+      "outputs": ["dist/**", ".next/**", "pkg/**"]
     },
     "wasm:build": {
       "dependsOn": ["^wasm:build"],

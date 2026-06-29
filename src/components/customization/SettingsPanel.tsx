@@ -1,10 +1,10 @@
 'use client'
 
-import { useGameStore } from '@/lib/stores/gameStore'
+import { useProfileStore } from '@/lib/stores/profileStore'
 import { terminalThemes } from '@/lib/data/terminalThemes'
 
 export function SettingsPanel() {
-  const { settings, updateSettings, profile } = useGameStore()
+  const { settings, updateSettings, operator } = useProfileStore()
 
   return (
     <div className="h-full overflow-auto p-4 font-mono text-xs" style={{ backgroundColor: '#050510' }}>
@@ -119,14 +119,15 @@ export function SettingsPanel() {
         </section>
 
         <section>
-          <div className="text-zinc-500 text-[10px] uppercase tracking-wider mb-2">Profile</div>
+          <div className="text-zinc-500 text-[10px] uppercase tracking-wider mb-2">Operator Profile</div>
           <div className="rounded-lg border border-zinc-800/50 p-3" style={{ backgroundColor: '#0a0a15' }}>
             <div className="space-y-1.5 text-zinc-500">
-              <div className="flex justify-between"><span>Username</span><span className="text-zinc-300">{profile.username}</span></div>
-              <div className="flex justify-between"><span>Level</span><span className="text-cyan-400">{profile.level}</span></div>
-              <div className="flex justify-between"><span>XP</span><span className="text-green-400">{profile.xp} / {profile.xpToNextLevel}</span></div>
-              <div className="flex justify-between"><span>Missions</span><span className="text-zinc-300">{profile.missionsCompleted}</span></div>
-              <div className="flex justify-between"><span>Achievements</span><span className="text-yellow-400">{profile.achievements.filter((a) => a.unlocked).length}</span></div>
+              <div className="flex justify-between"><span>Call Sign</span><span className="text-cyan-400">{operator.callSign}</span></div>
+              <div className="flex justify-between"><span>Role</span><span className="text-zinc-300">{operator.role.replace('_', ' ')}</span></div>
+              <div className="flex justify-between"><span>Clearance</span><span className="text-green-400">{operator.clearance.toUpperCase()}</span></div>
+              <div className="flex justify-between"><span>Team</span><span className="text-zinc-300">{operator.assignedTo}</span></div>
+              <div className="flex justify-between"><span>Shift</span><span className="text-zinc-300">{operator.shift}</span></div>
+              <div className="flex justify-between"><span>Certifications</span><span className="text-zinc-300">{operator.certifications.length > 0 ? operator.certifications.join(', ') : 'None'}</span></div>
             </div>
           </div>
         </section>

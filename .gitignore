@@ -2,6 +2,9 @@
 
 # dependencies
 /node_modules
+dist/
+pkg/
+.turbo/
 /.pnp
 .pnp.*
 .yarn/*

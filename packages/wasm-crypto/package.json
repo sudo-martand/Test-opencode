@@ -5,17 +5,16 @@
   "main": "src/index.ts",
   "types": "src/index.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --noEmit",
     "wasm:build": "cd wasm && cargo build --target wasm32-unknown-unknown --release && wasm-bindgen --target web --out-dir ../pkg ../target/wasm32-unknown-unknown/release/wasm_crypto.wasm && wasm-opt -Oz ../pkg/wasm_crypto_bg.wasm -o ../pkg/wasm_crypto_bg.wasm",
     "test": "vitest run"
   },
   "dependencies": {
-    "@cybersim/shared": "workspace:*"
+    "@cybersim/shared": "*"
   },
   "devDependencies": {
     "vitest": "^2",
     "@types/node": "^20",
-    "wasm-bindgen-cli": "^0.2",
-    "wasm-opt": "^1"
+    "wasm-pack": "^0.12"
   }
 }

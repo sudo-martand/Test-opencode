@@ -1,7 +1,7 @@
 'use client'
 
 import { createContext, useContext, useEffect, type ReactNode } from 'react'
-import { useGameStore } from '@/lib/stores/gameStore'
+import { useProfileStore } from '@/lib/stores/profileStore'
 import { terminalThemes } from '@/lib/data/terminalThemes'
 
 interface ThemeContextValue {
@@ -19,7 +19,7 @@ export function useTheme() {
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const { settings, updateSettings } = useGameStore()
+  const { settings, updateSettings } = useProfileStore()
 
   useEffect(() => {
     const theme = terminalThemes.find((t) => t.name === settings.terminalTheme) || terminalThemes[0]

@@ -2,14 +2,14 @@
 
 import { useEffect, useRef, useCallback, useState } from 'react'
 import { useTerminalStore } from '@/lib/stores/terminalStore'
-import { useGameStore } from '@/lib/stores/gameStore'
+import { useProfileStore } from '@/lib/stores/profileStore'
 import { useSound } from '@/components/sound/SoundProvider'
 import { executeCommand } from '@/lib/utils/terminalCommands'
 import { terminalThemes } from '@/lib/data/terminalThemes'
 
 export function TerminalPanel() {
-  const { sessions, activeSessionId, createSession, appendLine, clearSession, setActiveSession, addToHistory } = useTerminalStore()
-  const { settings } = useGameStore()
+  const { sessions, activeSessionId, sessionTabs, createSession, appendLine, clearSession, setActiveSession, addToHistory, closeSession } = useTerminalStore()
+  const { settings } = useProfileStore()
   const { playKeystroke, playSuccess, playError } = useSound()
   const [input, setInput] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
@@ -105,7 +105,7 @@ export function TerminalPanel() {
 
     if (e.key === 'Tab') {
       e.preventDefault()
-      const suggestions = ['help', 'clear', 'scan', 'trace', 'whoami', 'ls', 'cd ', 'pwd', 'cat ', 'neofetch', 'ping ', 'ifconfig', 'ps', 'date', 'echo ', 'ai ', 'breach ', 'decrypt ', 'analyze ', 'exploit ', 'monitor ', 'enumerate ', 'recon ']
+      const suggestions = ['help', 'clear', 'scan', 'trace', 'whoami', 'ls', 'cd ', 'pwd', 'cat ', 'neofetch', 'ping ', 'ifconfig', 'ps', 'date', 'echo ', 'ai ', 'analyze ', 'monitor ', 'nmap ', 'nslookup ', 'tcpdump ', 'wireshark ', 'grep ', 'tail ', 'head ', 'ss ', 'iptables ']
       const match = suggestions.find((s) => s.startsWith(input))
       if (match) setInput(match)
     }
@@ -128,6 +128,29 @@ export function TerminalPanel() {
       style={{ backgroundColor: theme.background, color: theme.foreground, fontSize: `${settings.fontSize}px` }}
       onClick={handleTerminalClick}
     >
+      {sessionTabs.length > 1 && (
+        <div className="flex items-center gap-0.5 px-2 pt-1 border-b" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
+          {sessionTabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveSession(tab.id)}
+              className={`px-3 py-1 text-[11px] rounded-t transition-colors ${
+                tab.id === activeSessionId
+                  ? 'bg-white/5 text-cyan-400'
+                  : 'text-zinc-500 hover:text-zinc-300'
+              }`}
+            >
+              {tab.label}
+              <span
+                onClick={(e) => { e.stopPropagation(); closeSession(tab.id) }}
+                className="ml-2 opacity-50 hover:opacity-100"
+              >
+                ×
+              </span>
+            </button>
+          ))}
+        </div>
+      )}
       <div ref={scrollRef} className="flex-1 overflow-y-auto p-3 space-y-0.5 scroll-smooth">
         {session.lines.map((line) => (
           <div

@@ -22,16 +22,15 @@
     "clean": "rm -rf dist pkg"
   },
   "dependencies": {
-    "@cybersim/shared": "workspace:*",
-    "@cybersim/kernel": "workspace:*",
-    "@cybersim/fs": "workspace:*",
-    "@cybersim/netstack": "workspace:*"
+    "@cybersim/shared": "*",
+    "@cybersim/kernel": "*",
+    "@cybersim/fs": "*",
+    "@cybersim/netstack": "*"
   },
   "devDependencies": {
-    "@cybersim/tsconfig": "workspace:*",
     "tsup": "^8",
     "vitest": "^2",
     "@vitest/coverage-v8": "^2",
-    "wasm-bindgen-cli": "^0.2"
+    "wasm-pack": "^0.12"
   }
 }

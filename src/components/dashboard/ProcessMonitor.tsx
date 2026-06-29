@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 
 interface Process {
   pid: number
@@ -8,37 +8,53 @@ interface Process {
   cpu: number
   mem: number
   user: string
-  status: 'running' | 'sleeping' | 'stopped'
-  started: Date
+  status: 'running' | 'sleeping' | 'stopped' | 'zombie'
+  started: number
+  threads: number
+  priority: number
 }
 
-const processNames = ['init', 'sshd', 'nginx', 'snifferd', 'payload_server', 'crypto_miner', 'intrusion_detect', 'packet_capture', 'terminal_server', 'ai_assistant', 'firewall_d', 'monitor_d', 'proxy_d', 'dnsmasq', 'cron', 'syslog_d', 'db_server', 'web_server', 'vpn_d', 'scan_d']
+const processNames = [
+  'systemd', 'sshd', 'nginx', 'snifferd', 'payload_server',
+  'crypto_miner', 'intrusion_detect', 'packet_capture', 'terminal_server',
+  'ai_assistant', 'firewalld', 'monitord', 'proxyd', 'dnsmasq',
+  'cron', 'syslogd', 'mysqld', 'apache2', 'vpn_d', 'scand',
+  'logrotate', 'dbus_d', 'networkd', 'resolved', 'timesyncd',
+]
+
+const users = ['root', 'operator', 'daemon', 'www-data', 'nobody', 'messagebus']
 
 export function ProcessMonitor() {
-  const [processes, setProcesses] = useState<Process[]>(() => {
-    const now = Date.now()
-    const statuses: Array<'running' | 'sleeping' | 'stopped'> = ['running', 'sleeping', 'stopped']
-    const users = ['root', 'operator', 'daemon', 'www-data']
-    return Array.from({ length: 20 }, (_, i) => ({
-      pid: i === 0 ? 1 : Math.floor((i * 997 + 13) % 30000) + 100,
-      name: processNames[i] || `process_${i}`,
+  const [processes, setProcesses] = useState<Process[]>(() =>
+    Array.from({ length: 25 }, (_, i) => ({
+      pid: i === 0 ? 1 : Math.floor((i * 991 + 17) % 32768) + 100,
+      name: processNames[i % processNames.length],
       cpu: ((i * 37) % 5000) / 100,
       mem: ((i * 53) % 3000) / 100,
       user: users[i % users.length],
-      status: i < 3 ? 'running' as const : statuses[i % statuses.length],
-      started: new Date(now - ((i * 997) % 86400000)),
+      status: (['running', 'sleeping', 'stopped', 'zombie'] as const)[i < 4 ? 0 : i % 4],
+      started: Date.now() - ((i * 997) % 86400000) - Math.floor(Math.random() * 3600000),
+      threads: Math.floor(Math.random() * 32) + 1,
+      priority: Math.floor(Math.random() * 20) - 5,
     }))
-  })
-  const [sortBy, setSortBy] = useState<'cpu' | 'mem' | 'pid' | 'name'>('cpu')
+  )
+
+  const [sortBy, setSortBy] = useState<'cpu' | 'mem' | 'pid' | 'name' | 'user'>('cpu')
+  const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc')
   const [filter, setFilter] = useState('')
+  const [statusFilter, setStatusFilter] = useState<string>('all')
 
   useEffect(() => {
     const interval = setInterval(() => {
       setProcesses((prev) =>
         prev.map((p) => ({
           ...p,
-          cpu: Math.max(0, p.cpu + (Math.random() - 0.5) * 5),
-          mem: Math.max(0, p.mem + (Math.random() - 0.5) * 2),
+          cpu: Math.max(0, Math.min(100, p.cpu + (Math.random() - 0.5) * 6)),
+          mem: Math.max(0, Math.min(100, p.mem + (Math.random() - 0.5) * 0.5)),
+          threads: Math.max(1, p.threads + Math.floor((Math.random() - 0.5) * 2)),
+          status: Math.random() > 0.98
+            ? (['running', 'sleeping', 'stopped'] as const)[Math.floor(Math.random() * 3)]
+            : p.status,
         }))
       )
     }, 2000)
@@ -49,71 +65,157 @@ export function ProcessMonitor() {
     setProcesses((prev) => prev.filter((p) => p.pid !== pid))
   }, [])
 
-  const sorted = [...processes]
-    .filter((p) => !filter || p.name.toLowerCase().includes(filter.toLowerCase()))
-    .sort((a, b) => {
-      if (sortBy === 'cpu') return b.cpu - a.cpu
-      if (sortBy === 'mem') return b.mem - a.mem
-      if (sortBy === 'pid') return a.pid - b.pid
-      return a.name.localeCompare(b.name)
-    })
+  const handleSort = useCallback((col: typeof sortBy) => {
+    if (sortBy === col) {
+      setSortDir((d) => (d === 'asc' ? 'desc' : 'asc'))
+    } else {
+      setSortBy(col)
+      setSortDir('desc')
+    }
+  }, [sortBy])
 
-  const statusColors: Record<string, string> = { running: 'text-green-400', sleeping: 'text-yellow-400', stopped: 'text-red-400' }
-  const totalCpu = processes.reduce((s, p) => s + p.cpu, 0)
-  const totalMem = processes.reduce((s, p) => s + p.mem, 0)
+  const sorted = useMemo(() => {
+    let result = [...processes]
+    if (statusFilter !== 'all') {
+      result = result.filter((p) => p.status === statusFilter)
+    }
+    if (filter) {
+      const lower = filter.toLowerCase()
+      result = result.filter((p) => p.name.toLowerCase().includes(lower) || p.user.toLowerCase().includes(lower) || p.pid.toString().includes(lower))
+    }
+    result.sort((a, b) => {
+      let cmp = 0
+      if (sortBy === 'cpu') cmp = a.cpu - b.cpu
+      else if (sortBy === 'mem') cmp = a.mem - b.mem
+      else if (sortBy === 'pid') cmp = a.pid - b.pid
+      else if (sortBy === 'name') cmp = a.name.localeCompare(b.name)
+      else if (sortBy === 'user') cmp = a.user.localeCompare(b.user)
+      return sortDir === 'desc' ? -cmp : cmp
+    })
+    return result
+  }, [processes, sortBy, sortDir, filter, statusFilter])
+
+  const statusColors: Record<string, string> = {
+    running: 'var(--soc-success)',
+    sleeping: 'var(--soc-warning)',
+    stopped: 'var(--soc-danger)',
+    zombie: 'var(--soc-critical)',
+  }
+
+  const totals = useMemo(() => ({
+    count: processes.length,
+    cpu: processes.reduce((s, p) => s + p.cpu, 0),
+    mem: processes.reduce((s, p) => s + p.mem, 0),
+    running: processes.filter((p) => p.status === 'running').length,
+  }), [processes])
+
+  const SortIcon = ({ col }: { col: typeof sortBy }) => {
+    if (sortBy !== col) return <span className="ml-0.5 opacity-30">↕</span>
+    return <span className="ml-0.5">{sortDir === 'asc' ? '↑' : '↓'}</span>
+  }
 
   return (
-    <div className="h-full overflow-auto p-3 font-mono text-xs" style={{ backgroundColor: '#050510' }}>
-      <div className="grid grid-cols-4 gap-2 mb-3">
-        <div className="rounded p-2 border border-zinc-800/50 text-center" style={{ backgroundColor: '#0a0a15' }}>
-          <div className="text-zinc-600 text-[10px]">Processes</div>
-          <div className="text-sm text-cyan-400">{processes.length}</div>
-        </div>
-        <div className="rounded p-2 border border-zinc-800/50 text-center" style={{ backgroundColor: '#0a0a15' }}>
-          <div className="text-zinc-600 text-[10px]">CPU Total</div>
-          <div className="text-sm text-green-400">{totalCpu.toFixed(1)}%</div>
-        </div>
-        <div className="rounded p-2 border border-zinc-800/50 text-center" style={{ backgroundColor: '#0a0a15' }}>
-          <div className="text-zinc-600 text-[10px]">MEM Total</div>
-          <div className="text-sm text-purple-400">{totalMem.toFixed(1)}%</div>
-        </div>
-        <div className="rounded p-2 border border-zinc-800/50 text-center" style={{ backgroundColor: '#0a0a15' }}>
-          <div className="text-zinc-600 text-[10px]">Running</div>
-          <div className="text-sm text-green-400">{processes.filter((p) => p.status === 'running').length}</div>
-        </div>
+    <div className="h-full flex flex-col font-mono text-xs" style={{ backgroundColor: 'var(--soc-bg)' }}>
+      {/* Stats */}
+      <div className="flex items-center gap-4 px-4 py-2 border-b text-[10px] shrink-0" style={{ borderColor: 'var(--soc-border)', backgroundColor: 'var(--soc-surface)' }}>
+        <span style={{ color: 'var(--soc-text-muted)' }}>
+          PROCESSES: <span style={{ color: 'var(--soc-accent)' }}>{totals.count}</span>
+        </span>
+        <span style={{ color: 'var(--soc-text-muted)' }}>
+          CPU: <span style={{ color: 'var(--soc-success)' }}>{totals.cpu.toFixed(1)}%</span>
+        </span>
+        <span style={{ color: 'var(--soc-text-muted)' }}>
+          MEM: <span style={{ color: 'var(--soc-info)' }}>{totals.mem.toFixed(1)}%</span>
+        </span>
+        <span style={{ color: 'var(--soc-text-muted)' }}>
+          RUNNING: <span style={{ color: 'var(--soc-success)' }}>{totals.running}</span>
+        </span>
       </div>
 
-      <input
-        type="text"
-        placeholder="Filter processes..."
-        value={filter}
-        onChange={(e) => setFilter(e.target.value)}
-        className="w-full mb-2 px-2 py-1 rounded bg-black/30 border border-zinc-800 text-zinc-300 text-[11px] outline-none focus:border-cyan-800"
-      />
+      {/* Controls */}
+      <div className="flex items-center gap-2 px-4 py-1.5 border-b shrink-0" style={{ borderColor: 'var(--soc-border)' }}>
+        <input
+          type="text"
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+          placeholder="Filter by name, PID, or user..."
+          className="flex-1 max-w-xs px-2 py-1 rounded text-[10px] border outline-none"
+          style={{
+            backgroundColor: 'var(--soc-bg)',
+            borderColor: 'var(--soc-border)',
+            color: 'var(--soc-text)',
+          }}
+        />
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          className="px-2 py-1 rounded text-[10px] border outline-none"
+          style={{
+            backgroundColor: 'var(--soc-bg)',
+            borderColor: 'var(--soc-border)',
+            color: 'var(--soc-text)',
+          }}
+        >
+          <option value="all">All Status</option>
+          <option value="running">Running</option>
+          <option value="sleeping">Sleeping</option>
+          <option value="stopped">Stopped</option>
+          <option value="zombie">Zombie</option>
+        </select>
+      </div>
 
-      <div className="rounded-lg border border-zinc-800/50 overflow-hidden" style={{ backgroundColor: '#0a0a15' }}>
-        <div className="flex items-center text-zinc-500 text-[10px] uppercase border-b border-zinc-800/50">
-          <button onClick={() => setSortBy('pid')} className={`px-2 py-1.5 w-16 text-left ${sortBy === 'pid' ? 'text-cyan-400' : ''}`}>PID</button>
-          <button onClick={() => setSortBy('name')} className={`px-2 py-1.5 flex-1 text-left ${sortBy === 'name' ? 'text-cyan-400' : ''}`}>Name</button>
-          <button onClick={() => setSortBy('cpu')} className={`px-2 py-1.5 w-16 text-right ${sortBy === 'cpu' ? 'text-cyan-400' : ''}`}>CPU%</button>
-          <button onClick={() => setSortBy('mem')} className={`px-2 py-1.5 w-16 text-right ${sortBy === 'mem' ? 'text-cyan-400' : ''}`}>MEM%</button>
-          <div className="px-2 py-1.5 w-20 text-center">Status</div>
-          <div className="w-10" />
-        </div>
+      {/* Table */}
+      <div
+        className="flex items-center text-[9px] font-bold tracking-wider px-4 py-1.5 border-b uppercase cursor-pointer shrink-0 select-none"
+        style={{ borderColor: 'var(--soc-border)', color: 'var(--soc-text-muted)', backgroundColor: 'rgba(0,0,0,0.2)' }}
+      >
+        <div className="w-16" onClick={() => handleSort('pid')}>PID<SortIcon col="pid" /></div>
+        <div className="flex-1" onClick={() => handleSort('name')}>Name<SortIcon col="name" /></div>
+        <div className="w-16 text-right" onClick={() => handleSort('cpu')}>CPU%<SortIcon col="cpu" /></div>
+        <div className="w-16 text-right" onClick={() => handleSort('mem')}>MEM%<SortIcon col="mem" /></div>
+        <div className="w-20 text-center">Status</div>
+        <div className="w-16" onClick={() => handleSort('user')}>User<SortIcon col="user" /></div>
+        <div className="w-12 text-center">Thr</div>
+        <div className="w-12" />
+      </div>
+
+      {/* Rows */}
+      <div className="flex-1 overflow-y-auto soc-scrollbar">
         {sorted.map((p) => (
-          <div key={p.pid} className="flex items-center text-[11px] border-b border-zinc-800/20 hover:bg-white/5">
-            <div className="px-2 py-1 w-16 text-zinc-400">{p.pid}</div>
-            <div className="px-2 py-1 flex-1 text-zinc-300">{p.name}</div>
-            <div className="px-2 py-1 w-16 text-right text-green-400">{p.cpu.toFixed(1)}</div>
-            <div className="px-2 py-1 w-16 text-right text-purple-400">{p.mem.toFixed(1)}</div>
-            <div className={`px-2 py-1 w-20 text-center ${statusColors[p.status]}`}>{p.status}</div>
-            <button
-              onClick={() => killProcess(p.pid)}
-              className="px-2 py-1 text-zinc-600 hover:text-red-400 transition-colors"
-              title="Kill process"
-            >
-              ✕
-            </button>
+          <div
+            key={p.pid}
+            className="flex items-center text-[10px] px-4 py-0.5 border-b transition-colors"
+            style={{ borderColor: 'rgba(30, 42, 54, 0.3)' }}
+            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.02)' }}
+            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent' }}
+          >
+            <div className="w-16" style={{ color: 'var(--soc-text-muted)' }}>{p.pid}</div>
+            <div className="flex-1" style={{ color: 'var(--soc-text)' }}>{p.name}</div>
+            <div className="w-16 text-right font-mono" style={{ color: p.cpu > 50 ? 'var(--soc-danger)' : p.cpu > 20 ? 'var(--soc-warning)' : 'var(--soc-success)' }}>
+              {p.cpu.toFixed(1)}
+            </div>
+            <div className="w-16 text-right font-mono" style={{ color: p.mem > 50 ? 'var(--soc-danger)' : p.mem > 20 ? 'var(--soc-warning)' : 'var(--soc-info)' }}>
+              {p.mem.toFixed(1)}
+            </div>
+            <div className="w-20 text-center">
+              <span
+                className="px-1.5 py-0.5 rounded text-[8px] font-semibold uppercase"
+                style={{ backgroundColor: `${statusColors[p.status]}15`, color: statusColors[p.status] }}
+              >
+                {p.status}
+              </span>
+            </div>
+            <div className="w-16" style={{ color: 'var(--soc-text-muted)' }}>{p.user}</div>
+            <div className="w-12 text-center" style={{ color: 'var(--soc-text-muted)' }}>{p.threads}</div>
+            <div className="w-12 text-center">
+              <button
+                onClick={() => killProcess(p.pid)}
+                className="text-[9px] px-1 py-0.5 rounded transition-colors hover:bg-red-900/30"
+                style={{ color: 'var(--soc-danger)' }}
+              >
+                KILL
+              </button>
+            </div>
           </div>
         ))}
       </div>

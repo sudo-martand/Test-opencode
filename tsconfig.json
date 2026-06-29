@@ -1,7 +1,12 @@
 {
   "compilerOptions": {
-    "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "target": "ES2022",
+    "lib": [
+      "ES2022",
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -11,7 +16,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "incremental": true,
     "plugins": [
       {
@@ -19,16 +24,67 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ],
+      "@cybersim/kernel": [
+        "./packages/kernel/src"
+      ],
+      "@cybersim/ui": [
+        "./packages/ui/src"
+      ],
+      "@cybersim/shared": [
+        "./packages/shared/src"
+      ],
+      "@cybersim/proto": [
+        "./packages/proto/src"
+      ],
+      "@cybersim/wasm-crypto": [
+        "./packages/wasm-crypto/src"
+      ],
+      "@cybersim/terminal": [
+        "./packages/terminal/src"
+      ],
+      "@cybersim/netstack": [
+        "./packages/netstack/src"
+      ],
+      "@cybersim/hostos": [
+        "./packages/hostos/src"
+      ],
+      "@cybersim/threatintel": [
+        "./packages/threatintel/src"
+      ],
+      "@cybersim/ai": [
+        "./packages/ai/src"
+      ],
+      "@cybersim/geo": [
+        "./packages/geo/src"
+      ],
+      "@cybersim/sound": [
+        "./packages/sound/src"
+      ],
+      "@cybersim/fs": [
+        "./packages/fs/src"
+      ],
+      "@cybersim/time": [
+        "./packages/time/src"
+      ]
     }
   },
   "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts",
-    "**/*.mts"
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build",
+    ".next",
+    ".turbo",
+    "pkg",
+    "**/__tests__/**",
+    "**/*.test.ts",
+    "**/*.spec.ts"
+  ]
 }

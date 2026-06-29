@@ -5,13 +5,13 @@
   "main": "src/index.ts",
   "types": "src/index.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --noEmit",
     "test": "vitest run",
     "data:download": "node scripts/download-geo-data.js"
   },
   "dependencies": {
-    "@cybersim/shared": "workspace:*",
-    "@cybersim/proto": "workspace:*",
+    "@cybersim/shared": "*",
+    "@cybersim/proto": "*",
     "three": "^0.165",
     "@react-three/fiber": "^8",
     "@react-three/drei": "^9"

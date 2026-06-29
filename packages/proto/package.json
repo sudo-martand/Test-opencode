@@ -5,15 +5,13 @@
   "main": "src/index.ts",
   "types": "src/index.ts",
   "scripts": {
-    "build": "tsc && protobuf-ts --out=src/generated protos/*.proto",
+    "build": "tsc --noEmit",
     "test": "vitest run"
   },
   "dependencies": {
-    "@bufbuild/protobuf": "^1",
-    "@bufbuild/protobuf-ts": "^1"
+    "@bufbuild/protobuf": "^1"
   },
   "devDependencies": {
-    "protobuf-ts": "^2",
     "vitest": "^2",
     "@types/node": "^20"
   }
