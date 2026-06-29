@@ -68,6 +68,9 @@
       ],
       "@cybersim/time": [
         "./packages/time/src"
+      ],
+      "@cybersim/deception": [
+        "./packages/deception/src"
       ]
     }
   },

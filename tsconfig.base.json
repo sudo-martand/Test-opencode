@@ -31,7 +31,8 @@
       "@cybersim/geo": ["packages/geo/src"],
       "@cybersim/sound": ["packages/sound/src"],
       "@cybersim/fs": ["packages/fs/src"],
-      "@cybersim/time": ["packages/time/src"]
+      "@cybersim/time": ["packages/time/src"],
+      "@cybersim/deception": ["packages/deception/src"]
     }
   },
   "exclude": ["node_modules", "dist", "build", ".next", ".turbo"]

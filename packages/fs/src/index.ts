@@ -10,7 +10,7 @@ export type FileSize = number & { readonly __brand: 'filesize' };
 export type BlockNumber = number & { readonly __brand: 'block' };
 
 export function inode(value: number): InodeNumber { return value as InodeNumber; }
-export function fileMode(value: number): FileMode { return (value & 0o7777) as FileMode; }
+export function fileMode(value: number): FileMode { return (value & 0o177777) as FileMode; }
 export function fileSize(value: number): FileSize { return value as FileSize; }
 
 export const S_IFMT = 0o170000;

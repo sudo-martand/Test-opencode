@@ -1,4 +1,15 @@
-// WASM crypto engine package
-// TODO: Implement constant-time crypto in Rust/WASM
-
-export {};
+export {
+  sha256,
+  hmac,
+  constantTimeEqual,
+  randomBytes,
+  randomHex,
+  randomInt,
+  generateKey,
+  generateHmacKey,
+  aesGcmEncrypt,
+  aesGcmDecrypt,
+  pbkdf2DeriveKey,
+  type CryptoKey,
+  type AesGcmEncrypted,
+} from './crypto';

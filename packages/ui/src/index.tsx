@@ -36,7 +36,7 @@ import {
 export type CSSClass = string | undefined | null | false | '' | readonly CSSClass[];
 export function cx(...classes: CSSClass[]): string {
   return classes
-    .flat()
+    .flat(Infinity)
     .filter(Boolean)
     .join(' ');
 }

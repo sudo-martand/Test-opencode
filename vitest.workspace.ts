@@ -116,6 +116,14 @@ export default defineWorkspace([
   {
     extends: './vitest.config.ts',
     test: {
+      name: 'deception',
+      root: './packages/deception',
+      include: ['src/**/*.test.ts', 'src/**/*.spec.ts', '__tests__/**/*.test.ts', '__tests__/**/*.spec.ts'],
+    },
+  },
+  {
+    extends: './vitest.config.ts',
+    test: {
       name: 'simulator',
       root: './apps/simulator',
       include: ['src/**/*.test.ts', 'src/**/*.spec.ts', '__tests__/**/*.test.ts', '__tests__/**/*.spec.ts'],

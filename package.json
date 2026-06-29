@@ -30,6 +30,7 @@
     "eslint-plugin-react": "^7",
     "eslint-plugin-react-hooks": "^4",
     "eslint-plugin-unicorn": "^53",
+    "jsdom": "^29.1.1",
     "prettier": "^3",
     "turbo": "^2",
     "typescript": "^5"

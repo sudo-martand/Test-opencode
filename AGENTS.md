@@ -4,27 +4,28 @@
 
 | Phase | Domain | Status | Tests | LoC |
 |-------|--------|--------|-------|-----|
-| 1 | **shared** (types, event bus, Result/Option) | ✅ Complete | 24 | ~500 |
-| 1 | **netstack** (TCP/IP, UDP, DNS, ARP, routing) | ✅ Complete | 97 | ~760 |
-| 1 | **hostos** (kernel, scheduler, syscalls, /proc) | ✅ Complete | 29 | ~840 |
-| 1 | **threatintel** (STIX, Sigma, YARA, TAXII, ATT&CK) | ✅ Complete | 37 | ~830 |
-| 1 | **geo** (IP geolocation, BGP ASN, cables, RF) | ✅ Complete | 29 | ~560 |
-| 1 | **sound** (DSP synthesis, keystroke/alert presets) | ✅ Complete | 22 | ~670 |
+| 1 | **shared** (types, event bus, Result/Option) | ✅ Complete | 25 | ~500 |
+| 1 | **netstack** (TCP/IP, UDP, DNS, ARP, routing) | ✅ Complete | 41 | ~760 |
+| 1 | **hostos** (kernel, scheduler, syscalls, /proc) | ✅ Complete | 37 | ~840 |
+| 1 | **threatintel** (STIX, Sigma, YARA, TAXII, ATT&CK) | ✅ Complete | 36 | ~830 |
+| 1 | **geo** (IP geolocation, BGP ASN, cables, RF) | ✅ Complete | 37 | ~560 |
+| 1 | **sound** (DSP synthesis, keystroke/alert presets) | ✅ Complete | 16 | ~670 |
 | 1 | **time** (hybrid logical clock, timers) | ✅ Complete | 18 | ~300 |
-| 1 | **ai** (ONNX Runtime Web manager) | ✅ Complete | (placeholder) | ~200 |
-| 1 | **fs** (VirtualFileSystem, IndexedDB) | ✅ Complete | (placeholder) | ~350 |
-| 1 | **kernel** (SimulationKernel mount/start/stop) | ✅ Complete | 5 | ~250 |
-| 1 | **terminal** (xterm.js wrapper) | ✅ Complete | (placeholder) | ~120 |
-| 1 | **ui** (Panel, DataTable, StatusIndicator, Toast) | ✅ Complete | (placeholder) | ~300 |
-| 1 | **proto** (@bufbuild/protobuf types) | ✅ Complete | (placeholder) | ~80 |
-| 1 | **wasm-crypto** (Rust workspace structure) | ✅ Scaffolded | (placeholder) | ~30 |
-| 2 | **ot-ics, dfir, cloud, identity, deception** | ❌ Not started | — | — |
+| 1 | **ai** (ModelManager, TextClassifier, AnomalyDetector) | ✅ Complete | 22 | ~250 |
+| 1 | **fs** (VirtualFileSystem, IndexedDB) | ✅ Complete | 51 | ~450 |
+| 1 | **kernel** (SimulationKernel mount/start/stop) | ✅ Complete | 6 | ~250 |
+| 1 | **terminal** (xterm.js wrapper) | ✅ Complete | 21 | ~200 |
+| 1 | **ui** (Panel, DataTable, StatusIndicator, Toast) | ✅ Complete | 8 | ~300 |
+| 1 | **proto** (@bufbuild/protobuf types) | ✅ Complete | 8 | ~80 |
+| 1 | **wasm-crypto** (SHA-256, HMAC, AES-GCM, PBKDF2, random) | ✅ Complete | 28 | ~300 |
+| 2 | **deception** (honeypots, honeytokens, decoy networks, breadcrumbs) | ✅ Complete | 45 | ~600 |
+| 2 | **ot-ics, dfir, cloud, identity** | ❌ Not started | — | — |
 | 2 | **supply-chain, hardware, space-aviation** | ❌ Not started | — | — |
 | 2 | **automotive, telecom, social-eng, risk** | ❌ Not started | — | — |
 | 2 | **blockchain, collab, formal** | ❌ Not started | — | — |
 
-**TypeScript strict mode**: ✅ Zero errors across all 17 packages (14 packages + 3 tools)
-**Tests**: ✅ 221 tests passing across 20 test files, all green
+**TypeScript strict mode**: ✅ Zero errors across all 18 packages (15 packages + 3 tools)
+**Tests**: ✅ 397 tests passing across 27 test files, all green
 **CI/CD**: ✅ 6-job workflow (typecheck, lint, test, build, Docker, Rust checks)
 **Rust toolchain**: ✅ rustc 1.96.0, cargo 1.96.0, wasm32 target installed
 
@@ -610,3 +611,41 @@ Deliver a **browser-native cyber operations simulator** that:
 **No compromises. No shortcuts. No "good enough." No domain left unmodeled.**
 
 Every line of code must survive the question: *"Would this exist in a real security product deployed at a Fortune 500 / three-letter agency / critical infrastructure operator / space agency / automotive OEM?"* If the answer is no, rewrite it until it does.
+
+---
+
+## Session Log
+
+### 2026-06-29 — Session 1: Baseline completion & Phase 2 kickoff
+
+**Accomplished:**
+- Wrote comprehensive `README.md` covering all 29 domains, architecture, tech stack, performance budgets, quality gates, and roadmap
+- Implemented `@cybersim/wasm-crypto` — pure TypeScript crypto module (SHA-256, HMAC, AES-GCM, PBKDF2, random bytes, constant-time comparison) backed by Web Crypto API, designed as a drop-in for future Rust WASM.
+- Wrote real tests (replacing placeholders) for 5 packages:
+  - **fs** (51 tests): init, mkdir, writeFile/readFile, readdir, stat, unlink, rmdir, symlink/readlink, chmod/chown, exists, mount/unmount, mountProc/mountSys/mountDev, snapshot/restore, walk, createDefaultFilesystem, utimes, error cases
+  - **ai** (22 tests): ModelManager, TextClassifier, AnomalyDetector score/baseline/threshold, EmbeddingStore add/get/remove/search/clear/filter, builtinModels, createDefaultModelManager
+  - **terminal** (21 tests): TerminalSessionImpl create/output/exit/write/resize/close/unsubscribe, SessionManagerImpl create/get/list/close/closeAll/counter, defaultTheme, createDefaultTerminalConfig
+  - **proto** (8 tests): serialize/deserialize round-trips for events, packets, reports, envelopes, optional/repeated fields
+  - **ui** (8 tests): cx() class name utility — joining, falsy filtering, empty input, flattening (nested arrays via flat(Infinity)), single string
+- Fixed 5 bugs:
+  - `fileMode()` mask: `0o7777` → `0o177777` (was stripping S_IFMT bits, breaking isDirectory/isRegularFile)
+  - Proto timestamp: `Number(decoded.timestamp)` for int64-as-string coercion
+  - AI threshold test: added `async` to `it()` callback (missing await)
+  - UI `cx()`: `.flat()` → `.flat(Infinity)` for nested array support
+  - Proto binary payload: avoided JSON.parse(JSON.stringify()) on bytes fields (mangles Uint8Array)
+- Implemented `@cybersim/deception` — full Phase 2 package with:
+  - 14 honeypot types (SSH, HTTP, HTTPS, MySQL, PostgreSQL, RDP, VNC, SMB, FTP, SMTP, DNS, Modbus, S7, DNP3)
+  - 4 honeytoken types (Credential, File, ApiKey, DatabaseRecord)
+  - `HoneypotManager` — deploy/stop/start/pause/remove, intrusion recording, stats
+  - `HoneytokenManager` — deploy/trigger by type/location/origin, stats
+  - `DeceptionEngine` — deception networks, decoy hosts, breadcrumbs, aggregated stats, reset
+  - `createDefaultDeceptionEngine()` — pre-configured env: 3 honeypots, 4 honeytokens, 2 breadcrumbs across 3 decoy hosts
+  - 44 tests covering all components
+- Updated AGENTS.md table and summary stats
+
+**Results:**
+- 397 tests passing across 27 test files (baseline: 221/20; delta: +176 tests, +7 files)
+- TypeScript strict mode: zero errors across 18 packages (15 source + 3 tools)
+- Packages fully tested: 14/14 — every package now has real tests
+
+**Next suggested work:** Phase 2 continuation — `dfir` (memory/disk/network forensics) or `identity` (Kerberos/AD/OAuth/SAML).
