@@ -40,7 +40,13 @@
       "@cybersim/supply-chain": ["packages/supply-chain/src"],
       "@cybersim/hardware": ["packages/hardware/src"],
       "@cybersim/space-aviation": ["packages/space-aviation/src"],
-      "@cybersim/automotive": ["packages/automotive/src"]
+      "@cybersim/automotive": ["packages/automotive/src"],
+      "@cybersim/telecom": ["packages/telecom/src"],
+      "@cybersim/social-eng": ["packages/social-eng/src"],
+      "@cybersim/risk": ["packages/risk/src"],
+      "@cybersim/blockchain": ["packages/blockchain/src"],
+      "@cybersim/collab": ["packages/collab/src"],
+      "@cybersim/formal": ["packages/formal/src"]
     }
   },
   "exclude": ["node_modules", "dist", "build", ".next", ".turbo"]

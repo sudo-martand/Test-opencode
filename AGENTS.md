@@ -27,11 +27,15 @@
 | 2 | **hardware** (CPU µarch, JTAG, TPM, side-channels, fault injection, firmware/UEFI, PCIe/USB/SPI/I2C, buses) | ✅ Complete | 105 | ~1770 |
 | 2 | **space-aviation** (SATCOM, CCSDS, GPS/GNSS, ACARS, ADS-B, avionics, UAV/MAVLink, ground stations, DO-326A) | ✅ Complete | 100 | ~1465 |
 | 3 | **automotive** (CAN, ECU, UDS, DTC, V2X, ADAS, ISO 21434, EV charging) | ✅ Complete | 75 | ~850 |
-| 3 | **telecom, social-eng, risk** | ❌ Not started | — | — |
-| 3 | **blockchain, collab, formal** | ❌ Not started | — | — |
+| 3 | **social-eng** (phishing, deepfakes, BEC, pretexting, insider threats, OSINT, psychological manipulation) | ✅ Complete | 75 | ~730 |
+| 3 | **blockchain** (Bitcoin, EVM, DeFi, MEV, bridges, NFTs, smart contract vulns, consensus attacks, wallet security, forensics) | ✅ Complete | 104 | ~900 |
+| 3 | **telecom** (5G, SS7, Diameter, GTP, IMS, O-RAN, network slicing, signaling security) | ✅ Complete | 75 | ~960 |
+| 3 | **risk** (FAIR, NIST CSF, compliance, attack graphs, KRIs, vendor risk, breach cost) | ✅ Complete | 85 | ~1420 |
+| 3 | **formal** (TLA+, Alloy, Z3, Coq, K Framework, mutation testing, runtime verification, determinism) | ✅ Complete | 107 | ~750 |
+| 3 | **collab** (exercise mgmt, AAR, comms, injects, participants) | ✅ Complete | 82 | ~920 |
 
-**TypeScript strict mode**: ✅ Zero errors across all 24 packages (21 packages + 3 tools)
-**Tests**: ✅ 1007 tests passing across 35 test files, all green
+**TypeScript strict mode**: ✅ Zero errors across all 29 packages (26 packages + 3 tools)
+**Tests**: ✅ 1535 tests passing across 41 test files, all green
 **CI/CD**: ✅ 6-job workflow (typecheck, lint, test, build, Docker, Rust checks)
 **Rust toolchain**: ✅ rustc 1.96.0, cargo 1.96.0, wasm32 target installed
 
@@ -821,4 +825,81 @@ Every line of code must survive the question: *"Would this exist in a real secur
 - TypeScript strict mode: zero errors across all 24 packages (21 source + 3 tools)
 - Phase 3: 1/5 rows complete (automotive)
 
-**Next suggested work:** Phase 3 continuation — telecom (5G, SS7), social-eng, risk, blockchain, collab, formal.
+**Next suggested work:** Phase 3 continuation — telecom (5G, SS7), risk, blockchain, collab, formal.
+
+### 2026-06-30 — Session 9: Social Engineering, Phase 3 At 2/5
+
+**Accomplished:**
+- Implemented `@cybersim/social-eng` — Social Engineering & Human Factors (75 tests, ~730 LoC):
+  - **7 branded ID types** — phishingCampaignId, deepfakeId, becIncidentId, pretextingId, insiderThreatId, osintTargetId, socialEngFindingId
+  - **13 enums** — PhishingType (8), PhishingStatus (7), DeepfakeType (5), BecType (6), PretextType (7), InsiderThreatType (7), InsiderThreatSeverity (5), OsintDataType (8), PsychologicalPrinciple (7), SocialEngineeringAttackType (13)
+  - **PhishingManager** — campaign lifecycle (create/deploy/recordClick/harvestCredential/close), list by type/status, stats
+  - **DeepfakeManager** — create/deploy/markDetected, stats by type
+  - **BecManager** — incident lifecycle (create/resolve), list by type, total loss/recovered tracking
+  - **PretextingManager** — scenario management, info gathering, success tracking
+  - **InsiderThreatManager** — threat lifecycle (indicators, timeline events, detect/contain), filter by type/severity
+  - **OsintManager** — target creation, data enrichment (email/phone/social/dark web), risk scoring, footprint sizing
+  - **SocialEngSecurityManager** — findings (filter by severity/attack type), known scenarios (18 attack vectors)
+  - **SocialEngCoordinator** — composes all 7 managers, getStats, reset
+  - **`createDefaultSocialEngEnvironment()`** — pre-configured: 4 phishing campaigns (spear/whaling/vishing/smishing), 2 deepfakes (voice clone + face swap), 3 BEC incidents ($365k total), 2 pretexting scenarios, 3 insider threats, 2 OSINT targets, 7 security findings, 18 known attack vectors
+
+**Results:**
+- 1082 tests passing across 36 test files (+75 tests, +1 file)
+- TypeScript strict mode: zero errors across all 25 packages (22 source + 3 tools)
+- Phase 3: 2/5 rows complete (automotive, social-eng)
+
+**Next suggested work:** Phase 3 — telecom, risk, blockchain, collab, formal.
+
+### 2026-06-30 — Session 9: Social Engineering + Blockchain, Phase 3 At 3/5
+
+**Accomplished:**
+- Implemented `@cybersim/social-eng` — Social Engineering & Human Factors (75 tests, ~730 LoC):
+  - **7 branded ID types** — phishingCampaignId, deepfakeId, becIncidentId, pretextingId, insiderThreatId, osintTargetId, socialEngFindingId
+  - **13 enums** — PhishingType (8), PhishingStatus (7), DeepfakeType (5), BecType (6), PretextType (7), InsiderThreatType (7), InsiderThreatSeverity (5), OsintDataType (8), PsychologicalPrinciple (7), SocialEngineeringAttackType (13)
+  - **PhishingManager** — campaign lifecycle (create/deploy/recordClick/harvestCredential/close), list by type/status, stats
+  - **DeepfakeManager** — create/deploy/markDetected, stats by type
+  - **BecManager** — incident lifecycle (create/resolve), list by type, total loss/recovered tracking
+  - **PretextingManager** — scenario management, info gathering, success tracking
+  - **InsiderThreatManager** — threat lifecycle (indicators, timeline events, detect/contain), filter by type/severity
+  - **OsintManager** — target creation, data enrichment (email/phone/social/dark web), risk scoring, footprint sizing
+  - **SocialEngSecurityManager** — findings (filter by severity/attack type), known scenarios (18 attack vectors)
+  - **SocialEngCoordinator** — composes all 7 managers, getStats, reset
+  - **`createDefaultSocialEngEnvironment()`** — pre-configured: 4 phishing campaigns (spear/whaling/vishing/smishing), 2 deepfakes (voice clone + face swap), 3 BEC incidents ($365k total), 2 pretexting scenarios, 3 insider threats, 2 OSINT targets, 7 security findings, 18 known attack vectors
+
+**Results:**
+- 1082 tests passing across 36 test files (+75 tests, +1 file)
+- TypeScript strict mode: zero errors across all 25 packages (22 source + 3 tools)
+- Phase 3: 2/5 rows complete (automotive, social-eng)
+
+**Next suggested work:** Phase 3 continuation — telecom (5G, SS7), risk, blockchain, collab, formal.
+
+### 2026-06-30 — Session 10: Blockchain + Telecom + Risk + Collab + Formal, Phase 3 Complete (7/7)
+
+**Accomplished:**
+- Implemented `@cybersim/blockchain` — Blockchain & DeFi Security (104 tests, ~900 LoC):
+  - 8 branded IDs, 9 enums, 10+ interfaces: BlockInstance, TransactionInstance, SmartContractInstance, DeFiProtocolInstance, NftInstance, BridgeInstance, MevBundle
+  - **BlockchainCoordinator** with block/tx/contract/protocol/nft/bridge management
+  - **createDefaultBlockchainEnvironment()** — 3 blocks, 8 transactions, 4 smart contracts, 3 DeFi protocols, 3 NFTs, 2 bridges, 2 MEV bundles, 6 findings, 10+ known attacks
+- Implemented `@cybersim/telecom` — Telecommunications Security (75 tests, ~960 LoC):
+  - 8 branded IDs, 10 enums, 6 managers: NetworkFunctionManager, RanManager, ImsManager, SignalingManager, Subscriber/Slice management
+  - **TelecomCoordinator** with 5GC NFs (AMF/SMF/UPF/UDM/AUSF/PCF/NRF/NSSF/SEPP), 4G EPC (MME/SGW/PGW/HSS), 5G RAN, IMS sessions, SS7/Diameter/GTP signaling
+  - **createDefaultTelecomEnvironment()** — 10 NFs, 3 RAN nodes, 3 IMS sessions, 10 messages, 2 subscribers, 2 slices, 6 findings, 10+ attack scenarios
+- Implemented `@cybersim/risk` — Cyber Risk Quantification (85 tests, ~1420 LoC):
+  - 8 branded IDs, 10 enums, 6 managers: FairManager, ComplianceManager, AttackGraphManager, KpiManager, VendorManager
+  - **RiskCoordinator** with risk register, asset/control inventory, FAIR Monte Carlo, NIST CSF 2.0, compliance frameworks, attack graphs, KRIs, TPRM
+  - **createDefaultRiskEnvironment()** — 6 risks, 5 assets, 4 controls, 1 FAIR analysis, 2 frameworks, 8-node attack graph, 5 KPIs, 3 vendors, 6 scenarios
+- Implemented `@cybersim/collab` — Collaborative Operations (82 tests, ~920 LoC):
+  - 8 branded IDs, 8 enums, 5 managers: ExerciseManager, ParticipantManager, InjectManager, CommunicationManager, AARManager
+  - **CollabCoordinator** with Red/Blue/Purple team exercises, ICS incident command, multi-echelon command, communication channels, after-action review
+  - **createDefaultCollabEnvironment()** — 2 exercises, 5 teams, 10 participants, 8 injects, 3 channels, 12 messages, 1 AAR, 4 findings, 6 challenges
+- Implemented `@cybersim/formal` — Formal Verification Framework (107 tests, ~750 LoC):
+  - 8 branded IDs, 10 enums, 6 managers: ModelManager, SpecificationManager, MutationTestingManager, RuntimeVerificationManager, DeterminismManager
+  - **FormalCoordinator** with TLA+/Alloy/Z3/Coq models, property checking, mutation testing (kill rate), runtime monitors, determinism checks
+  - **createDefaultFormalEnvironment()** — 4 models, 4 specs, 9 properties, 6+ runs, 6 mutations, 3 monitors, 2 determinism checks, 4 findings, 7 challenges
+
+**Results:**
+- 1535 tests passing across 41 test files (+453 tests, +5 files from Session 8)
+- TypeScript strict mode: zero errors across all 29 packages (26 source + 3 tools)
+- Phase 3: ✅ **COMPLETE** (7/7 rows: automotive, social-eng, blockchain, telecom, risk, collab, formal)
+
+**Next suggested work:** Phase 4 integration — simulator app wiring, CI updates, typecheck/lint hardening, benchmark suite, documentation.
