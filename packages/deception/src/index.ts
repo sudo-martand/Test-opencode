@@ -219,7 +219,7 @@ export function createHoneypotConfig(type: HoneypotType, overrides?: Partial<Hon
     bindAddress: '0.0.0.0',
     customResponses: {},
     ...overrides,
-  };
+  } as HoneypotConfig;
 }
 
 export function createSshHoneypot(config?: Partial<HoneypotConfig>): HoneypotInstance {

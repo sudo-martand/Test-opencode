@@ -391,9 +391,9 @@ export interface FileScanResult {
 }
 
 export class CaseManager {
-  private cases: Map<CaseId, ForensicCase> = new Map();
-  private evidence: Map<EvidenceId, Evidence> = new Map();
-  private artifacts: Map<ArtifactId, Artifact> = new Map();
+  private cases: Map<CaseId, ForensicCase> = new Map<CaseId, ForensicCase>();
+  private evidence: Map<EvidenceId, Evidence> = new Map<EvidenceId, Evidence>();
+  private artifacts: Map<ArtifactId, Artifact> = new Map<ArtifactId, Artifact>();
 
   createCase(name: string, analyst: string, organization: string, description = ''): ForensicCase {
     const now = new Date();

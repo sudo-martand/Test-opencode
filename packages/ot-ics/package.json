@@ -1,0 +1,18 @@
+{
+  "name": "@cybersim/ot-ics",
+  "version": "0.1.0",
+  "private": true,
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "build": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@cybersim/shared": "*"
+  },
+  "devDependencies": {
+    "vitest": "^2",
+    "@types/node": "^20"
+  }
+}
