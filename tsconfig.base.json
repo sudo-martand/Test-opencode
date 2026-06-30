@@ -33,7 +33,12 @@
       "@cybersim/fs": ["packages/fs/src"],
       "@cybersim/time": ["packages/time/src"],
       "@cybersim/deception": ["packages/deception/src"],
-      "@cybersim/dfir": ["packages/dfir/src"]
+      "@cybersim/dfir": ["packages/dfir/src"],
+      "@cybersim/identity": ["packages/identity/src"],
+      "@cybersim/ot-ics": ["packages/ot-ics/src"],
+      "@cybersim/cloud": ["packages/cloud/src"],
+      "@cybersim/supply-chain": ["packages/supply-chain/src"],
+      "@cybersim/hardware": ["packages/hardware/src"]
     }
   },
   "exclude": ["node_modules", "dist", "build", ".next", ".turbo"]

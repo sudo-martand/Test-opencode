@@ -132,6 +132,46 @@ export default defineWorkspace([
   {
     extends: './vitest.config.ts',
     test: {
+      name: 'identity',
+      root: './packages/identity',
+      include: ['src/**/*.test.ts', 'src/**/*.spec.ts', '__tests__/**/*.test.ts', '__tests__/**/*.spec.ts'],
+    },
+  },
+  {
+    extends: './vitest.config.ts',
+    test: {
+      name: 'ot-ics',
+      root: './packages/ot-ics',
+      include: ['src/**/*.test.ts', 'src/**/*.spec.ts', '__tests__/**/*.test.ts', '__tests__/**/*.spec.ts'],
+    },
+  },
+  {
+    extends: './vitest.config.ts',
+    test: {
+      name: 'cloud',
+      root: './packages/cloud',
+      include: ['src/**/*.test.ts', 'src/**/*.spec.ts', '__tests__/**/*.test.ts', '__tests__/**/*.spec.ts'],
+    },
+  },
+  {
+    extends: './vitest.config.ts',
+    test: {
+      name: 'supply-chain',
+      root: './packages/supply-chain',
+      include: ['src/**/*.test.ts', 'src/**/*.spec.ts', '__tests__/**/*.test.ts', '__tests__/**/*.spec.ts'],
+    },
+  },
+  {
+    extends: './vitest.config.ts',
+    test: {
+      name: 'hardware',
+      root: './packages/hardware',
+      include: ['src/**/*.test.ts', 'src/**/*.spec.ts', '__tests__/**/*.test.ts', '__tests__/**/*.spec.ts'],
+    },
+  },
+  {
+    extends: './vitest.config.ts',
+    test: {
       name: 'simulator',
       root: './apps/simulator',
       include: ['src/**/*.test.ts', 'src/**/*.spec.ts', '__tests__/**/*.test.ts', '__tests__/**/*.spec.ts'],

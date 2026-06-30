@@ -20,13 +20,17 @@
 | 1 | **wasm-crypto** (SHA-256, HMAC, AES-GCM, PBKDF2, random) | ✅ Complete | 28 | ~300 |
 | 2 | **deception** (honeypots, honeytokens, decoy networks, breadcrumbs) | ✅ Complete | 45 | ~600 |
 | 2 | **dfir** (CaseManager, MemoryAnalyzer, DiskAnalyzer, NetworkAnalyzer, TimelineBuilder, IocManager, DFIRCoordinator) | ✅ Complete | 86 | ~780 |
-| 2 | **ot-ics, cloud, identity** | ❌ Not started | — | — |
-| 2 | **supply-chain, hardware, space-aviation** | ❌ Not started | — | — |
-| 2 | **automotive, telecom, social-eng, risk** | ❌ Not started | — | — |
-| 2 | **blockchain, collab, formal** | ❌ Not started | — | — |
+| 2 | **identity** (AD, Kerberos, NTLM, OAuth 2.1, OIDC, SAML, FIDO2, PKI, password security, IdP) | ✅ Complete | 75 | ~950 |
+| 2 | **ot-ics** (PLC, RTU, SCADA, DCS, Modbus, DNP3, IEC 61850, Purdue, alarm mgmt) | ✅ Complete | 62 | ~950 |
+| 2 | **cloud** (AWS, Azure, GCP, K8s, IAM, CSPM, serverless) | ✅ Complete | 59 | ~1050 |
+| 2 | **supply-chain** (SBOM, SLSA, in-toto, Sigstore) | ✅ Complete | 48 | ~650 |
+| 2 | **hardware** (CPU µarch, JTAG, TPM, side-channels, fault injection, firmware/UEFI, PCIe/USB/SPI/I2C, buses) | ✅ Complete | 105 | ~1770 |
+| 2 | **space-aviation** | ❌ Not started | — | — |
+| 3 | **automotive, telecom, social-eng, risk** | ❌ Not started | — | — |
+| 3 | **blockchain, collab, formal** | ❌ Not started | — | — |
 
-**TypeScript strict mode**: ✅ Zero errors across all 19 packages (16 packages + 3 tools)
-**Tests**: ✅ 483 tests passing across 28 test files, all green
+**TypeScript strict mode**: ✅ Zero errors across all 23 packages (20 packages + 3 tools)
+**Tests**: ✅ 832 tests passing across 33 test files, all green
 **CI/CD**: ✅ 6-job workflow (typecheck, lint, test, build, Docker, Rust checks)
 **Rust toolchain**: ✅ rustc 1.96.0, cargo 1.96.0, wasm32 target installed
 
@@ -650,3 +654,120 @@ Every line of code must survive the question: *"Would this exist in a real secur
 - Packages fully tested: 14/14 — every package now has real tests
 
 **Next suggested work:** Phase 2 continuation — `dfir` (memory/disk/network forensics) or `identity` (Kerberos/AD/OAuth/SAML).
+
+### 2026-06-30 — Session 2: DFIR + Identity, Phase 2 at 3/7
+
+**Accomplished:**
+- Implemented `@cybersim/dfir` — Digital Forensics & Incident Response (86 tests, ~780 LoC):
+  - `CaseManager` — case lifecycle, evidence/artifact management, categorization
+  - `MemoryAnalyzer` — process listing (25 simulated processes), PID scan, hidden process detection, memory regions with protection attributes, kernel module detection, malware pattern matching, network connection extraction
+  - `DiskAnalyzer` — MBR partition analysis, NTFS filesystem walking, MFT entry parsing with deletion flags, file carving (JPEG, PNG, PDF, ZIP, OLE, MP3, EXE, ELF signatures)
+  - `NetworkAnalyzer` — packet summaries, NetFlow records, DNS query extraction, HTTP request parsing, TLS handshake details (SNI, JA3/JA3S)
+  - `TimelineBuilder` — super timeline with filterable events, automatic construction from evidence, chronological sorting
+  - `IocManager` — indicator lifecycle, filtering by type/severity/confidence, relationship linking, automatic IoC generation from artifacts
+  - `DFIRCoordinator` — orchestrates all analyzers, single-call analysis, enterprise-wide timeline
+- Implemented `@cybersim/identity` — Identity & Access Management (75 tests, ~950 LoC):
+  - `DomainManager` — domains, trusts (bidirectional/outbound/inbound, parent-child/forest/external), OUs (nested, protected), GPOs with linking
+  - `UserManager` — users (UPN/SAM/email), groups (security/distribution, global/universal/domain-local), group membership, hierarchy (manager), account flags (enabled/locked/expired/delegation/MFA), bad-password lockout, sessions, PAM resources
+  - `TokenManager` — OAuth application registration (public/confidential, PKCE), authorization grants, token exchange, refresh/revoke/validate, SAML assertions
+  - `AuthenticationEngine` — Kerberos AS-REQ/TGS-REQ (with delegation), NTLM challenge-response, OAuth 2.1 authorization code + client credentials grants, SAML SSO, FIDO2, TOTP validation
+  - `PasswordAnalyzer` — entropy/crack-time scoring, common password/leaked password detection, NTLM hash dictionary cracking, password spraying simulation
+  - `CertificateAuthority` — root/intermediate/end-entity CA hierarchy, server/client certificate issuance, revocation, validation, chain building
+  - `IdentityProviderSimulator` — SSO/SLO, sign-on logs, provider stats
+  - `IdentityCoordinator` — `createDefaultEnterprise()`: 1 domain, 5 OUs, 5 users, 5 groups (Domain Admins, Security Analysts, etc.), root+intermediate CA chain, OAuth app; user overview with risk levels; password audit
+
+**Results:**
+- 558 tests passing across 29 test files (+161 tests, +2 files from Session 1)
+- TypeScript strict mode: zero errors across 20 packages (17 source + 3 tools)
+- Phase 2: 3/7 domains complete (deception, dfir, identity); ot-ics, cloud, supply-chain, hardware remaining
+
+**Next suggested work:** Phase 2 continuation — `ot-ics` (PLC/SCADA/Modbus/DNP3/IEC 61850) or `cloud` (AWS/Azure/GCP simulation).
+
+### 2026-06-30 — Session 3: OT/ICS, Phase 2 at 4/7
+
+**Accomplished:**
+- Implemented `@cybersim/ot-ics` — Operational Technology / Industrial Control Systems (62 tests, ~950 LoC):
+  - **Purdue model** — zones (0-5), cells, Zone/Cell classes with create functions
+  - **PLC simulation** — `PlcManager` with deploy/get/list/filter (vendor, status, zone), status management, zone/cell assignment, scan time updates, support for 10 vendors (Siemens, Allen-Bradley, Schneider, Mitsubishi, CODESYS, Omron, Keyence, Panasonic, Fatek, Delta) and 24 models with vendor-specific defaults (ports, protocols, memory sizes)
+  - **RTU simulation** — `RtuInstance` with config, deploy via `PlcManager`
+  - **Field devices** — sensors (range, accuracy, unit, update rate) and actuators (type, response time) attachable to PLCs/RTUs
+  - **Fieldbus protocols** — `FieldbusManager` with 27 protocol types (Modbus RTU/TCP/ASCII, DNP3, IEC 60870-5-101/104, IEC 61850 MMS/GOOSE/SV, Profibus DP/PA, Profinet IO, EtherCAT, CANopen, DeviceNet, ControlNet, HART, Foundation Fieldbus, OPC DA/UA, S7comm, CIP, etc.), message sending, state management (online/offline/degraded/bus-off)
+  - **HMI/SCADA/DCS** — `ScadaManager` with vendor-specific configs (Wonderware, WinCC, iFix, Ignition, VTScada, AVEVA, Emerson DeltaV, Honeywell Experion, Yokogawa Centum, ABB 800xA), connectivity management
+  - **Safety systems** — `SafetySystemInstance` with SIL 1-4, voting schemes (1oo1/1oo2/2oo2/2oo3/2oo4), proof test intervals, 6 system types (ESD, F&G, BMS, HIPPS, turbine, pressure)
+  - **Alarm management (ISA-18.2)** — `AlarmManager` with full lifecycle (normal → active → acknowledged → returned-to-normal), shelving/suppression, 8 alarm types (hi_hi, hi, lo, lo_lo, rate_of_change, deviation, bad_quality, roc), priority levels (0-5 with color coding), on/off delay, deadband
+  - **Physical process simulation** — `ProcessVariable` with thresholds (HH/H/LL/L), auto-alarm creation on threshold breach, quality flags (good/bad/uncertain/substituted)
+  - **ICS attack knowledge base** — 7 real attacks (TRITON, Industroyer/CrashOverride, Stuxnet, Havex, BlackEnergy, Pipedream/INCONTROLLER, COSMICENERGY) with target protocols, vendors, models, MITRE ICS technique IDs, impact descriptions
+  - `OtIcsCoordinator` composes all sub-managers; `createDefaultOtIcsEnvironment()` creates 3 PLCs, 2 RTUs, 4 field devices, 2 fieldbuses, 2 HMIs, 1 SCADA, 1 DCS, 1 safety system, 2 processes, 4 zones, 2 cells, 7 registered attacks
+
+**Results:**
+- 620 tests passing across 30 test files (+62 tests, +1 file)
+- TypeScript strict mode: zero errors across 21 packages (18 source + 3 tools)
+- Phase 2: 4/7 domains complete (deception, dfir, identity, ot-ics); cloud, supply-chain, hardware remaining
+
+**Next suggested work:** Phase 2 continuation — `cloud` (AWS/Azure/GCP simulation).
+
+### 2026-06-30 — Session 4: Cloud, Phase 2 at 5/7
+
+**Accomplished:**
+- Implemented `@cybersim/cloud` — Multi-Cloud Security Simulation (59 tests, ~1050 LoC):
+  - **AWS simulation** — `AwsAccount`, `AwsRegion`, `AwsVpc`, `AwsSubnet`, `AwsSecurityGroup` with inbound/outbound rules, `AwsInstance` (EC2), `AwsStorageBucket` (S3), `AwsLambdaFunction`, `AwsRdsInstance` (RDS), `AwsLoadBalancer` (ALB/NLB/GWLB)
+  - **IAM simulation** — `IamPolicy` (managed/inline, conditions), `IamRole` (trust policies, policy attachment), `IamUser` (access keys, MFA, groups), `IamAccessKey` lifecycle
+  - **Kubernetes simulation** — `K8sCluster` with namespaces, nodes, pods, services, deployments, roles/bindings, network policies, service accounts; pod-level security context (privileged, hostNetwork, hostPID, seccomp, Capabilities)
+  - **Azure/GCP stubs** — `AzureSubscription`, `AzureResourceGroup`, `GcpProject` interfaces for multi-cloud modeling
+  - **Security assessment engine** — `assessSecurityGroup()` (public SSH/RDP/database ports → findings), `assessStorageBucket()` (public access, encryption, versioning, logging), `assessInstance()` (encryption, monitoring, public IPs), `assessK8sPod()` (privileged, root, host network/PID, seccomp, capability escalation)
+  - **`CloudAccountManager`** — unified resource manager with CRUD for 15+ resource types, security assessment orchestration, audit event management, finding lifecycle (add/mitigate/filter by severity/category)
+  - **`createDefaultCloudEnvironment()`** — pre-configured: 1 account, 3 regions, 2 VPCs, 3 subnets, 2 SGs, 3 EC2 instances, 2 S3 buckets, 2 Lambda functions, 2 RDS databases, 1 ALB, 2 IAM roles, 2 IAM policies, 2 IAM users, 1 EKS cluster with 2 pods + 2 services, 2 audit events
+
+**Results:**
+- 679 tests passing across 31 test files (+59 tests, +1 file)
+- TypeScript strict mode: zero errors across 22 packages (19 source + 3 tools)
+- Phase 2: 5/7 domains complete (deception, dfir, identity, ot-ics, cloud); supply-chain, hardware, space-aviation remaining
+
+**Next suggested work:** Phase 2 continuation — `supply-chain` (SBOM, SLSA, in-toto, Sigstore).
+
+### 2026-06-30 — Session 5: Supply Chain, Phase 2 at 6/7
+
+**Accomplished:**
+- Implemented `@cybersim/supply-chain` — Supply Chain Security (48 tests, ~650 LoC):
+  - **SBOM** — `SbomManager` with SPDX 2.3/3.0 and CycloneDX 1.4/1.5 format support, generation from packages/dependencies, relationship mapping, validation
+  - **Vulnerability management** — `VulnerabilityManager` with CVE registration, severity filtering, exploited detection, CVSS severity mapping
+  - **Attestation & Provenance** — `AttestationManager` managing in-toto attestations, SLSA provenance (levels 1-4), Sigstore Rekor entries
+  - **Software composition analysis** — `SoftwareCompositionAnalyzer` with package/dependency tracking, typo-squatting detection (Levenshtein distance), dependency confusion detection
+  - **Scorecard** — `ScorecardManager` with OpenSSF Scorecard-style checks (20 check types), weighted scoring, average score calculation
+  - **Build system** — `BuildManager` with CI/CD pipeline tracking (8 build systems), status management
+  - **Policy engine** — `SupplyChainPolicyManager` with rule-based evaluation (allow/deny/warn), regex resource matching
+  - **Threat knowledge base** — 9 attack vectors (Dependency Confusion, Typosquatting, Repo Jacking, Malicious Package, Compromised Maintainer, Build Tampering, Cache Poisoning, Manifest Confusion, Protestware) with mitigations and real-world examples
+  - `SupplyChainCoordinator` composing all sub-managers; `createDefaultSupplyChainEnvironment()` with 3 packages, 4 dependencies, 1 SBOM, 3 CVEs (Log4Shell, MOVEit, XZ backdoor), 1 provenance, 1 attestation, 1 sigstore entry, 1 build, 1 scorecard, 1 policy, 9 known threats
+
+**Results:**
+- 727 tests passing across 32 test files (+48 tests, +1 file)
+- TypeScript strict mode: zero errors across 22 packages (19 source + 3 tools)
+- Phase 2: 6/7 domains complete (deception, dfir, identity, ot-ics, cloud, supply-chain); hardware, space-aviation remaining
+
+**Next suggested work:** Phase 2 continuation — `hardware` (CPU microarchitecture, firmware/UEFI, JTAG/SWD, side-channels).
+
+### 2026-06-30 — Session 6: Hardware, Phase 2 Complete (7/7)
+
+**Accomplished:**
+- Registered `@cybersim/hardware` in `tsconfig.base.json` and `vitest.workspace.ts`
+- Fixed `PciDevice` interface — renamed conflicting `device` field (both `string` and `number`) to `product` (string) and `deviceNumber` (number)
+- Wrote 105 tests covering all hardware components:
+  - Branded IDs (18 ID generators with prefix + uniqueness)
+  - Factory functions (createCacheConfig, createCpuConfig, createCpuInstance, createPciDevice, createUsbDevice, createFirmware, createTpmDevice, createJtagDevice, createSideChannelTrace, createFaultInjection, createPcbComponent, createSdrConfig, getKnownHardwareVulnerabilities)
+  - **CpuSimulator** (12 tests): add/get/remove, setUtilization with clamp, setCoreFrequency, simulateCycle with bigint counters, checkVulnerability, applyMitigation dedup, getStats, clear
+  - **FirmwareManager** (11 tests): provision with overrides, get, addVariable, addBootEntry, addTcgLogEntry, setSecureBootState, missing firmware handling, remove, clear
+  - **TpmManager** (10 tests): provision with type, takeOwnership/clearOwnership state transitions, seal/unseal when owned/unowned, remoteAttest with quote/PCRs, remove/clear
+  - **JtagManager** (10 tests): add/get, connect/disconnect, readIdCode with connected/disconnected, readRegister with tap/register lookup, shiftIr/shiftDr operation recording, clear
+  - **SideChannelManager** (6 tests): capture/retrieve, listByType, listSuccessful, getStats, remove/clear
+  - **FaultInjectionManager** (5 tests): inject/retrieve, listByType, listSuccessful, getStats, clear
+  - **BusManager** (14 tests): PCI/USB/SPI/I2C/NVMe add/get/list, spiTransfer with data push, i2cRead/i2cWrite, getStats, clear all bus types
+  - **HardwareCoordinator** (7 tests): composition, getKnownVulnerabilities, getVulnerabilitiesByArchitecture, initial stats, stats after adding resources, reset
+  - **createDefaultHardwareEnvironment** (9 tests): 2 CPUs (AMD + Intel), firmware with variables/boot entries/TCG log, owned TPM, JTAG with scan chain, side-channel traces (2 success + 1 fail), fault injection attempts, PCI + USB devices, populated stats
+  - **Enum completeness** (4 tests): CpuArchitecture, SpeculativeVulnerability, SideChannelType, FaultInjectionType
+
+**Results:**
+- 832 tests passing across 33 test files (+105 tests, +1 file)
+- TypeScript strict mode: zero errors across 23 packages (20 source + 3 tools)
+- Phase 2: ✅ **COMPLETE** (7/7 domains: deception, dfir, identity, ot-ics, cloud, supply-chain, hardware)
+
+**Next suggested work:** Phase 3 — space-aviation (SATCOM, CCSDS, ACARS, ADS-B, avionics), OR automotive (CAN, ECU, UDS, AUTOSAR, V2X).
