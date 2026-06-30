@@ -25,12 +25,12 @@
 | 2 | **cloud** (AWS, Azure, GCP, K8s, IAM, CSPM, serverless) | ✅ Complete | 59 | ~1050 |
 | 2 | **supply-chain** (SBOM, SLSA, in-toto, Sigstore) | ✅ Complete | 48 | ~650 |
 | 2 | **hardware** (CPU µarch, JTAG, TPM, side-channels, fault injection, firmware/UEFI, PCIe/USB/SPI/I2C, buses) | ✅ Complete | 105 | ~1770 |
-| 2 | **space-aviation** | ❌ Not started | — | — |
+| 2 | **space-aviation** (SATCOM, CCSDS, GPS/GNSS, ACARS, ADS-B, avionics, UAV/MAVLink, ground stations, DO-326A) | ✅ Complete | 100 | ~1465 |
 | 3 | **automotive, telecom, social-eng, risk** | ❌ Not started | — | — |
 | 3 | **blockchain, collab, formal** | ❌ Not started | — | — |
 
 **TypeScript strict mode**: ✅ Zero errors across all 23 packages (20 packages + 3 tools)
-**Tests**: ✅ 832 tests passing across 33 test files, all green
+**Tests**: ✅ 932 tests passing across 34 test files, all green
 **CI/CD**: ✅ 6-job workflow (typecheck, lint, test, build, Docker, Rust checks)
 **Rust toolchain**: ✅ rustc 1.96.0, cargo 1.96.0, wasm32 target installed
 
@@ -770,4 +770,31 @@ Every line of code must survive the question: *"Would this exist in a real secur
 - TypeScript strict mode: zero errors across 23 packages (20 source + 3 tools)
 - Phase 2: ✅ **COMPLETE** (7/7 domains: deception, dfir, identity, ot-ics, cloud, supply-chain, hardware)
 
-**Next suggested work:** Phase 3 — space-aviation (SATCOM, CCSDS, ACARS, ADS-B, avionics), OR automotive (CAN, ECU, UDS, AUTOSAR, V2X).
+**Next suggested work:** Phase 3 — automotive (CAN, ECU, UDS, AUTOSAR, V2X) OR telecom (5G, SS7, Diameter, GTP, IMS).
+
+### 2026-06-30 — Session 7: Space-Aviation, Phase 2 Complete (8/8)
+
+**Accomplished:**
+- Implemented `@cybersim/space-aviation` — Space & Aviation Security Simulation (100 tests, ~1465 LoC):
+  - **13 branded ID types** with factory functions
+  - **SatelliteManager** — add/get/remove/list/clear, filter by type (GEO/MEO/LEO/SSO/HEO), status, payload (8 types), band (8 bands), count methods
+  - **GroundStationManager** — filter by capability (7 types), band, compromised state
+  - **AircraftManager** — filter by type (6 types), altitude range, geographic region, on-ground/in-air counts
+  - **UavManager** — filter by flight mode (8 modes), armed state, geofence status, battery threshold, geofence radius update
+  - **AvionicsManager** — filter by type (8 types: FMS, EFB, TCAS, TAWS, weather radar, ILS, flight director, autopilot), aircraft, online/offline, integrity warnings
+  - **SpaceProtocolManager** — CCSDS TC/TM/AOS/FDP/SLE message handling, filter by type/source/encrypted/invalid
+  - **GnssSignalManager** — filter by constellation (6: GPS, GLONASS, Galileo, BeiDou, IRNSS, QZSS), band (12 bands), civil/military, jam/spoof operations
+  - **AcarsManager** — ACARS datalink messages (6 data types), filter by type/aircraft/authenticated/injected
+  - **AdsBManager** — ADS-B Out (5 message types), position/velocity/identification/status/target state, spoofed detection
+  - **MavLinkManager** — UAV MAVLink protocol (7 message types, 6 components), heartbeat/attitude/position/battery
+  - **SecurityManager** — security findings (4 severity levels), attack scenarios (11 attack types), DO-326A levels
+  - **SpaceAviationCoordinator** — composes all 11 managers, getStats, reset
+  - **`createDefaultSpaceAviationEnvironment()`** — pre-configured: 4 satellites (Intelsat-901 GEO, Starlink-3012 LEO, GPS-BIIF-10 MEO, KH-11-7 SSO), 2 ground stations (Svalbard, McMurdo), 3 aircraft, 4 UAVs (2x Reaper, 1 Mavic 3, 1 FPV outlier), 4 avionics systems, 3 CCSDS messages, 4 GNSS signals (GPS L1+L2, Galileo E1, BeiDou B1), 4 ACARS messages (incl. 1 injected diversion), 2 ADS-B messages, 2 MAVLink messages, 5 security findings, 5 attack scenarios
+  - **10 known space attack scenarios** (GPS spoofing/jamming, SATCOM interference, command injection, ACARS injection, ADS-B ghost aircraft, ASAT, ground station breach, GNSS meaconing, link interception)
+
+**Results:**
+- 932 tests passing across 34 test files (+100 tests, +1 file)
+- TypeScript strict mode: zero errors across all 23 packages (20 source + 3 tools)
+- Phase 2: ✅ **COMPLETE** (8/8 rows: deception, dfir, identity, ot-ics, cloud, supply-chain, hardware, space-aviation)
+
+**Next suggested work:** Phase 3 — automotive (CAN, ECU, UDS, AUTOSAR, V2X), telecom (5G, SS7, Diameter, GTP, IMS), social-eng, risk, blockchain, collab, formal.

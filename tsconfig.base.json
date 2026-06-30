@@ -38,7 +38,8 @@
       "@cybersim/ot-ics": ["packages/ot-ics/src"],
       "@cybersim/cloud": ["packages/cloud/src"],
       "@cybersim/supply-chain": ["packages/supply-chain/src"],
-      "@cybersim/hardware": ["packages/hardware/src"]
+      "@cybersim/hardware": ["packages/hardware/src"],
+      "@cybersim/space-aviation": ["packages/space-aviation/src"]
     }
   },
   "exclude": ["node_modules", "dist", "build", ".next", ".turbo"]
