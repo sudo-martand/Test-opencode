@@ -39,7 +39,8 @@
       "@cybersim/cloud": ["packages/cloud/src"],
       "@cybersim/supply-chain": ["packages/supply-chain/src"],
       "@cybersim/hardware": ["packages/hardware/src"],
-      "@cybersim/space-aviation": ["packages/space-aviation/src"]
+      "@cybersim/space-aviation": ["packages/space-aviation/src"],
+      "@cybersim/automotive": ["packages/automotive/src"]
     }
   },
   "exclude": ["node_modules", "dist", "build", ".next", ".turbo"]

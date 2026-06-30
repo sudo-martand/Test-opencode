@@ -26,11 +26,12 @@
 | 2 | **supply-chain** (SBOM, SLSA, in-toto, Sigstore) | ✅ Complete | 48 | ~650 |
 | 2 | **hardware** (CPU µarch, JTAG, TPM, side-channels, fault injection, firmware/UEFI, PCIe/USB/SPI/I2C, buses) | ✅ Complete | 105 | ~1770 |
 | 2 | **space-aviation** (SATCOM, CCSDS, GPS/GNSS, ACARS, ADS-B, avionics, UAV/MAVLink, ground stations, DO-326A) | ✅ Complete | 100 | ~1465 |
-| 3 | **automotive, telecom, social-eng, risk** | ❌ Not started | — | — |
+| 3 | **automotive** (CAN, ECU, UDS, DTC, V2X, ADAS, ISO 21434, EV charging) | ✅ Complete | 75 | ~850 |
+| 3 | **telecom, social-eng, risk** | ❌ Not started | — | — |
 | 3 | **blockchain, collab, formal** | ❌ Not started | — | — |
 
-**TypeScript strict mode**: ✅ Zero errors across all 23 packages (20 packages + 3 tools)
-**Tests**: ✅ 932 tests passing across 34 test files, all green
+**TypeScript strict mode**: ✅ Zero errors across all 24 packages (21 packages + 3 tools)
+**Tests**: ✅ 1007 tests passing across 35 test files, all green
 **CI/CD**: ✅ 6-job workflow (typecheck, lint, test, build, Docker, Rust checks)
 **Rust toolchain**: ✅ rustc 1.96.0, cargo 1.96.0, wasm32 target installed
 
@@ -797,4 +798,27 @@ Every line of code must survive the question: *"Would this exist in a real secur
 - TypeScript strict mode: zero errors across all 23 packages (20 source + 3 tools)
 - Phase 2: ✅ **COMPLETE** (8/8 rows: deception, dfir, identity, ot-ics, cloud, supply-chain, hardware, space-aviation)
 
-**Next suggested work:** Phase 3 — automotive (CAN, ECU, UDS, AUTOSAR, V2X), telecom (5G, SS7, Diameter, GTP, IMS), social-eng, risk, blockchain, collab, formal.
+**Next suggested work:** Phase 3 — telecom (5G, SS7, Diameter, GTP, IMS), social-eng, risk, blockchain, collab, formal.
+
+### 2026-06-30 — Session 8: Automotive, Phase 3 At 1/5
+
+**Accomplished:**
+- Implemented `@cybersim/automotive` — Automotive Security Simulation (75 tests, ~850 LoC):
+  - **8 branded ID types** — VehicleId, EcuId, CanBusId, CanMessageId, DiagnosticSessionId, DiagnosticTroubleCodeId, V2xMessageId, AutoSecurityFindingId
+  - **VehicleManager** — filter by type (7), make, year range, ignition state
+  - **EcuManager** — filter by type (12 ECU types), vendor, online/offline, authenticated/unauthenticated, active session, supported service, flash counter
+  - **CanBusManager** — filter by protocol (CAN 2.0, FD, XL, CANopen, J1939), vehicle, active state, load threshold
+  - **CanMessageManager** — filter by bus, frame type, arbitration ID, spoofed, error frames, remote frames; spoofMessage
+  - **DiagnosticManager** — UDS sessions (18 diagnostic services), security levels, session lifecycle; DTC management (active/stored/pending/confirmed, severity levels, freeze frame, clearDtc)
+  - **V2xManager** — BSM/CAM/DENM/SPaT/MAPEM/IVIM messages, DSRC/C-V2X/NR-V2X, regional filtering, spoof detection
+  - **AutoSecurityManager** — findings (4 severities, 5 domains, ISO 21434 clauses), known attacks
+  - **AutomotiveCoordinator** — composes 7 managers, getStats with spoofed counts, reset
+  - **`createDefaultAutomotiveEnvironment()`** — pre-configured: 1 vehicle (Tesla Model 3), 6 ECUs (Bosch ECM, Continental ABS, Qualcomm TCU, Valeo BCM, Mobileye ADAS, NXP Gateway), 4 CAN buses (Powertrain, Chassis, Infotainment, Diagnostic), 4 CAN messages (1 spoofed), 2 diagnostic sessions, 2 DTCs (P0300 active, U0100 stored), 3 V2X messages (BSM, CAM, spoofed DENM), 6 security findings, 10 known attack scenarios
+  - **10 known automotive attack scenarios** (CAN injection, UDS exploitation, V2X spoofing, telematics RCE, OBD-II, EV charging, J1939, ADAS sensor manipulation, IVI injection, keyless relay)
+
+**Results:**
+- 1007 tests passing across 35 test files (+75 tests, +1 file)
+- TypeScript strict mode: zero errors across all 24 packages (21 source + 3 tools)
+- Phase 3: 1/5 rows complete (automotive)
+
+**Next suggested work:** Phase 3 continuation — telecom (5G, SS7), social-eng, risk, blockchain, collab, formal.
