@@ -19,13 +19,14 @@
 | 1 | **proto** (@bufbuild/protobuf types) | ✅ Complete | 8 | ~80 |
 | 1 | **wasm-crypto** (SHA-256, HMAC, AES-GCM, PBKDF2, random) | ✅ Complete | 28 | ~300 |
 | 2 | **deception** (honeypots, honeytokens, decoy networks, breadcrumbs) | ✅ Complete | 45 | ~600 |
-| 2 | **ot-ics, dfir, cloud, identity** | ❌ Not started | — | — |
+| 2 | **dfir** (CaseManager, MemoryAnalyzer, DiskAnalyzer, NetworkAnalyzer, TimelineBuilder, IocManager, DFIRCoordinator) | ✅ Complete | 86 | ~780 |
+| 2 | **ot-ics, cloud, identity** | ❌ Not started | — | — |
 | 2 | **supply-chain, hardware, space-aviation** | ❌ Not started | — | — |
 | 2 | **automotive, telecom, social-eng, risk** | ❌ Not started | — | — |
 | 2 | **blockchain, collab, formal** | ❌ Not started | — | — |
 
-**TypeScript strict mode**: ✅ Zero errors across all 18 packages (15 packages + 3 tools)
-**Tests**: ✅ 397 tests passing across 27 test files, all green
+**TypeScript strict mode**: ✅ Zero errors across all 19 packages (16 packages + 3 tools)
+**Tests**: ✅ 483 tests passing across 28 test files, all green
 **CI/CD**: ✅ 6-job workflow (typecheck, lint, test, build, Docker, Rust checks)
 **Rust toolchain**: ✅ rustc 1.96.0, cargo 1.96.0, wasm32 target installed
 

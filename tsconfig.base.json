@@ -32,7 +32,8 @@
       "@cybersim/sound": ["packages/sound/src"],
       "@cybersim/fs": ["packages/fs/src"],
       "@cybersim/time": ["packages/time/src"],
-      "@cybersim/deception": ["packages/deception/src"]
+      "@cybersim/deception": ["packages/deception/src"],
+      "@cybersim/dfir": ["packages/dfir/src"]
     }
   },
   "exclude": ["node_modules", "dist", "build", ".next", ".turbo"]
