@@ -12,28 +12,39 @@ No other simulator, open-source or commercial, targets this breadth at this dept
 
 | Phase | Domain | Status | Tests | LoC |
 |-------|--------|--------|-------|-----|
-| 1 | **shared** (types, event bus, Result/Option) | ✅ Complete | 24 | ~500 |
-| 1 | **netstack** (TCP/IP, UDP, DNS, ARP, routing) | ✅ Complete | 97 | ~760 |
-| 1 | **hostos** (kernel, scheduler, syscalls, /proc) | ✅ Complete | 29 | ~840 |
-| 1 | **threatintel** (STIX, Sigma, YARA, TAXII, ATT&CK) | ✅ Complete | 37 | ~830 |
-| 1 | **geo** (IP geolocation, BGP ASN, cables, RF) | ✅ Complete | 29 | ~560 |
-| 1 | **sound** (DSP synthesis, keystroke/alert presets) | ✅ Complete | 22 | ~670 |
+| 1 | **shared** (types, event bus, Result/Option) | ✅ Complete | 25 | ~500 |
+| 1 | **netstack** (TCP/IP, UDP, DNS, ARP, routing) | ✅ Complete | 41 | ~760 |
+| 1 | **hostos** (kernel, scheduler, syscalls, /proc) | ✅ Complete | 37 | ~840 |
+| 1 | **threatintel** (STIX, Sigma, YARA, TAXII, ATT&CK) | ✅ Complete | 36 | ~830 |
+| 1 | **geo** (IP geolocation, BGP ASN, cables, RF) | ✅ Complete | 37 | ~560 |
+| 1 | **sound** (DSP synthesis, keystroke/alert presets) | ✅ Complete | 16 | ~670 |
 | 1 | **time** (hybrid logical clock, timers) | ✅ Complete | 18 | ~300 |
-| 1 | **ai** (ONNX Runtime Web manager) | ✅ Complete | (placeholder) | ~200 |
-| 1 | **fs** (VirtualFileSystem, IndexedDB) | ✅ Complete | (placeholder) | ~350 |
-| 1 | **kernel** (SimulationKernel mount/start/stop) | ✅ Complete | 5 | ~250 |
-| 1 | **terminal** (xterm.js wrapper) | ✅ Complete | (placeholder) | ~120 |
-| 1 | **ui** (Panel, DataTable, StatusIndicator, Toast) | ✅ Complete | (placeholder) | ~300 |
-| 1 | **proto** (@bufbuild/protobuf types) | ✅ Complete | (placeholder) | ~80 |
-| 1 | **wasm-crypto** (Rust workspace structure) | ✅ Scaffolded | (placeholder) | ~30 |
-| 2 | **ot-ics, dfir, cloud, identity, deception** | ❌ Not started | — | — |
-| 2 | **supply-chain, hardware, space-aviation** | ❌ Not started | — | — |
-| 2 | **automotive, telecom, social-eng, risk** | ❌ Not started | — | — |
-| 2 | **blockchain, collab, formal** | ❌ Not started | — | — |
+| 1 | **ai** (ModelManager, TextClassifier, AnomalyDetector) | ✅ Complete | 22 | ~250 |
+| 1 | **fs** (VirtualFileSystem, IndexedDB) | ✅ Complete | 51 | ~450 |
+| 1 | **kernel** (SimulationKernel mount/start/stop) | ✅ Complete | 6 | ~250 |
+| 1 | **terminal** (xterm.js wrapper) | ✅ Complete | 21 | ~200 |
+| 1 | **ui** (Panel, DataTable, StatusIndicator, Toast) | ✅ Complete | 8 | ~300 |
+| 1 | **proto** (@bufbuild/protobuf types) | ✅ Complete | 8 | ~80 |
+| 1 | **wasm-crypto** (SHA-256, HMAC, AES-GCM, PBKDF2, random) | ✅ Complete | 28 | ~300 |
+| 2 | **deception** (honeypots, honeytokens, decoy networks, breadcrumbs) | ✅ Complete | 45 | ~600 |
+| 2 | **dfir** (CaseManager, MemoryAnalyzer, DiskAnalyzer, NetworkAnalyzer, TimelineBuilder, IocManager, DFIRCoordinator) | ✅ Complete | 86 | ~780 |
+| 2 | **identity** (AD, Kerberos, NTLM, OAuth 2.1, OIDC, SAML, FIDO2, PKI, password security, IdP) | ✅ Complete | 75 | ~950 |
+| 2 | **ot-ics** (PLC, RTU, SCADA, DCS, Modbus, DNP3, IEC 61850, Purdue, alarm mgmt) | ✅ Complete | 62 | ~950 |
+| 2 | **cloud** (AWS, Azure, GCP, K8s, IAM, CSPM, serverless) | ✅ Complete | 59 | ~1050 |
+| 2 | **supply-chain** (SBOM, SLSA, in-toto, Sigstore) | ✅ Complete | 48 | ~650 |
+| 2 | **hardware** (CPU µarch, JTAG, TPM, side-channels, fault injection, firmware/UEFI, PCIe/USB/SPI/I2C, buses) | ✅ Complete | 105 | ~1770 |
+| 2 | **space-aviation** (SATCOM, CCSDS, GPS/GNSS, ACARS, ADS-B, avionics, UAV/MAVLink, ground stations, DO-326A) | ✅ Complete | 100 | ~1465 |
+| 3 | **automotive** (CAN, ECU, UDS, DTC, V2X, ADAS, ISO 21434, EV charging) | ✅ Complete | 75 | ~850 |
+| 3 | **social-eng** (phishing, deepfakes, BEC, pretexting, insider threats, OSINT, psychological manipulation) | ✅ Complete | 75 | ~730 |
+| 3 | **blockchain** (Bitcoin, EVM, DeFi, MEV, bridges, NFTs, smart contract vulns, consensus attacks, wallet security, forensics) | ✅ Complete | 104 | ~900 |
+| 3 | **telecom** (5G, SS7, Diameter, GTP, IMS, O-RAN, network slicing, signaling security) | ✅ Complete | 75 | ~960 |
+| 3 | **risk** (FAIR, NIST CSF, compliance, attack graphs, KRIs, vendor risk, breach cost) | ✅ Complete | 85 | ~1420 |
+| 3 | **formal** (TLA+, Alloy, Z3, Coq, K Framework, mutation testing, runtime verification, determinism) | ✅ Complete | 107 | ~750 |
+| 3 | **collab** (exercise mgmt, AAR, comms, injects, participants) | ✅ Complete | 82 | ~920 |
 
-**TypeScript strict mode**: ✅ Zero errors across all 17 packages (14 packages + 3 tools)  
-**Tests**: ✅ 221 tests passing across 20 test files, all green  
-**CI/CD**: ✅ 6-job workflow (typecheck, lint, test, build, Docker, Rust checks)  
+**TypeScript strict mode**: ✅ Zero errors across all 29 packages (26 packages + 3 tools)
+**Tests**: ✅ 1535 tests passing across 41 test files, all green
+**CI/CD**: ✅ 6-job workflow (typecheck, lint, test, build, Docker, Rust checks)
 **Rust toolchain**: ✅ rustc 1.96.0, cargo 1.96.0, wasm32 target installed  
 
 ---
@@ -122,23 +133,23 @@ No other simulator, open-source or commercial, targets this breadth at this dept
 - **UI** — Panel, DataTable, StatusIndicator, Toast components
 - **Crypto (WASM)** — Rust workspace structure for WASM crypto modules
 
-### Phase 2 — Planned (15 domains)
+### Phase 2-3 — Complete (15 domains)
 
-- OT/ICS/SCADA — Purdue model, PLC/RTU/HMI/DCS simulation, fieldbus protocols (Modbus, DNP3, IEC 61850, Profinet, EtherCAT), ICS-specific attacks (TRITON, Industroyer, Stuxnet), physical process simulation
-- Space/Aviation — SATCOM, CCSDS, spacecraft bus, GPS spoofing/jamming, ACARS, ADS-B, ARINC 429/664/825, avionics (FMS, EFB, TCAS), UAV (MAVLink, PX4)
-- Automotive — CAN/CAN FD/LIN/FlexRay, ECU simulation, UDS/OBD-II, AUTOSAR, V2X/C-V2X, ADAS, ISO 21434, charging infrastructure (ISO 15118)
-- 5G/Telecom — 5GC (AMF, SMF, UPF...), 5G RAN (gNB, O-RAN), 4G/LTE, IMS/VoLTE, SS7/MAP, Diameter, GTP, IMSI catchers, network slicing
-- DFIR — Memory forensics (Volatility 3), disk forensics (Sleuth Kit), mobile forensics, cloud forensics, malware analysis (static/dynamic), timeline analysis
-- Cloud — AWS/Azure/GCP simulation, multi-cloud IAM, CSPM/CWPP/CIEM, Kubernetes security, service mesh, serverless, eBPF observability (Falco, Tetragon)
-- Identity — Active Directory (Kerberos, NTLM, LDAP), Entra ID, OAuth 2.1/OIDC, SAML, FIDO2/WebAuthn, PAM, PKI
-- Deception — Honeypots (high/low interaction), honeytokens, honeynets, active defense, attribution obfuscation
-- Supply Chain — SBOM (SPDX/CycloneDX), SLSA, dependency confusion, CI/CD pipeline security, Sigstore, OpenSSF Scorecard
-- Social Engineering — Phishing/spear-phishing/vishing/smishing, deepfake audio/video, BEC, pretexting, insider threat
-- Cyber Risk — FAIR model, Monte Carlo simulation, NIST CSF 2.0, regulatory compliance (GDPR, PCI-DSS, HIPAA, SOC 2), cyber wargaming, attack graphs
-- Blockchain/DeFi — Bitcoin full node, Ethereum/EVM, DeFi protocol exploitation, cross-chain bridges, smart contract vulnerabilities, MEV, wallet security, ZK-rollups
-- Hardware — CPU microarchitecture, PCIe/USB/SATA/NVMe, UEFI firmware, Intel ME/AMD PSP, JTAG/SWD, side-channel emulation, fault injection, TPM 2.0, SDR, PCB viewer
-- Collaboration — Red vs Blue team exercises, Purple team, SOC team tiers, incident command, distributed simulation (CRDT, WebRTC), after-action review
-- Formal Verification — TLA+/PlusCal, Alloy, Z3 SMT, Coq/Rocq, K framework, concolic testing, property-based testing, mutation testing, runtime verification
+- **Deception** — Honeypots (14 types: SSH, HTTP, HTTPS, MySQL, PostgreSQL, RDP, VNC, SMB, FTP, SMTP, DNS, Modbus, S7, DNP3), honeytokens (Credential, File, ApiKey, DatabaseRecord), deception networks, breadcrumbs
+- **DFIR** — Case management, memory analysis (processes, modules, hidden detection, malware patterns, network connections), disk analysis (partition, NTFS/MFT, file carving), network analysis (packets, NetFlow, DNS, HTTP, TLS/JA3), timeline builder, IoC management
+- **Identity** — AD domains/trusts/GPOs, Kerberos (AS-REQ/TGS-REQ/delegation), NTLM challenge-response, OAuth 2.1/SAML/FIDO2/TOTP, password analysis (entropy/crack-time/spraying), PKI/CA hierarchy
+- **OT/ICS/SCADA** — Purdue model, PLC/RTU/HMI/DCS simulation (10 vendors, 24 models), fieldbus protocols (27 types), safety systems (SIL 1-4), ISA-18.2 alarm management, ICS-specific attacks (TRITON, Industroyer, Stuxnet, Havex, BlackEnergy, Pipedream, COSMICENERGY), physical process simulation with auto-alarming
+- **Cloud** — AWS (EC2/S3/Lambda/RDS/ALB/Security Groups), IAM (policies, roles, users, access keys), EKS (pods, services, network policies, security contexts), Azure/GCP stubs, security assessment engine (SG, bucket, instance, pod)
+- **Supply Chain** — SBOM (SPDX 2.3/3.0, CycloneDX 1.4/1.5), vulnerability manager (CVE/EPSS), in-toto attestations, SLSA provenance (levels 1-4), Sigstore Rekor, typo-squatting detection, dependency confusion, scorecard (20 checks), build systems, policy engine
+- **Hardware** — CPU µarch (x86/ARM/RISC-V), firmware/UEFI (variables, boot entries, TCG log), TPM 2.0 (seal/unseal/remote attestation), JTAG/SWD (boundary scan, ID codes, register access), side-channels (7 types: cache timing, power analysis, EM, timing, RF, acoustic, optical), fault injection (voltage/clock/EM/laser/rowhammer), PCIe/USB/SPI/I2C/NVMe buses
+- **Space/Aviation** — SATCOM (GEO/MEO/LEO/SSO/HEO), CCSDS (TC/TM/AOS/FDP/SLE), GPS/GNSS (6 constellations, 12 bands, spoofing/jamming/meaconing), ACARS (injected diversion), ADS-B (5 message types, ghost aircraft), avionics (FMS, EFB, TCAS, TAWS, weather radar, ILS), UAV/MAVLink (7 message types, 6 components), ground stations, DO-326A
+- **Automotive** — CAN/CAN FD/XL/CANopen/J1939, ECU simulation (12 types: ECM, ABS, TCU, BCM, ADAS, Gateway, etc.), UDS (18 diagnostic services), DTC lifecycle, V2X (BSM/CAM/DENM/SPaT/MAPEM/IVIM, DSRC/C-V2X/NR-V2X), ISO 21434
+- **Social Engineering** — Phishing (8 types), deepfakes (voice clone, face swap, lip sync), BEC (6 types), pretexting (7 types), insider threats (7 types, 5 severity levels), OSINT, psychological manipulation (Cialdini principles)
+- **Telecom** — 5GC (AMF/SMF/UPF/UDM/AUSF/PCF/NRF/NSSF/SEPP), 4G EPC (MME/SGW/PGW/HSS/PCRF), 5G RAN (gNB CU/DU/RU, O-RAN), IMS/VoLTE (CSCF/TAS/MRF/MGCF), SS7/MAP/Diameter/GTP, signaling security, IMSI catchers, network slicing
+- **Blockchain/DeFi** — Bitcoin full node, Ethereum/EVM, DeFi (DEX, lending, yield), cross-chain bridges, smart contract vulnerabilities (10 types), MEV (arbitrage, sandwich, liquidation), wallet security, blockchain forensics
+- **Cyber Risk** — FAIR model (Monte Carlo simulation), NIST CSF 2.0 maturity, compliance (GDPR, PCI-DSS, HIPAA, SOC 2, ISO 27001), attack graphs, breach cost modeling, KRIs, TPRM
+- **Collaboration** — Red vs Blue/Purple team exercises, SOC tiers (1/2/3), incident command (NIMS/ICS), communication channels (chat, voice, secure), inject engine, after-action review with replay
+- **Formal Verification** — TLA+/PlusCal, Alloy, Z3 SMT, Coq, K Framework, property-based testing, mutation testing (kill rate), runtime verification, determinism checks
 
 ---
 
@@ -240,7 +251,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Deliverables
 
-1. **Complete monorepo** — 14 implemented packages + 15 planned
+1. **Complete monorepo** — 29 implemented packages across 3 phases
 2. **Architecture Decision Records** — in `docs/adr/`
 3. **Simulation Kernel Specification** — formal TLA+/Alloy specs
 4. **Threat Model Document** — STRIDE/LINDDUN analysis per subsystem
